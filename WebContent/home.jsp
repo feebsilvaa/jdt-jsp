@@ -168,8 +168,8 @@
                         <td><span>${ usuario.login }</span></td>
                         <td><span>${ usuario.senha }</span></td>
                         <td>
-                          <a class="btn btn-outline-dark" href="usuarios?acao=edicao&user=${ usuario.login }"><i class="fas fa-edit"></i></a>
-                          <a class="btn btn-outline-dark" onclick="fillModal('${ usuario.login }')" data-toggle="modal" data-target="#confirmaExclusaoModal"><i class="fas fa-trash"></i></a>
+                          <a class="btn btn-outline-dark" href="usuarios?acao=edicao&id=${ usuario.id }"><i class="fas fa-edit"></i></a>
+                          <a class="btn btn-outline-dark" onclick="fillModal('${ usuario.id }')" data-toggle="modal" data-target="#confirmaExclusaoModal"><i class="fas fa-trash"></i></a>
                         </td>
                       </tr>
                     </c:forEach>
@@ -223,7 +223,7 @@
  <script type="text/javascript">
  	function fillModal(id) {
  		console.log(id);
-		$('#btnConfirmaExclusaoModal').attr("href", "usuarios?acao=excluir&user=" + id);
+		$('#btnConfirmaExclusaoModal').attr("href", "usuarios?acao=excluir&id=" + id);
 	}
  </script>
  
