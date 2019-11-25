@@ -59,6 +59,20 @@ public class UsuarioDao {
 		return null;
 	}
 
+	public Usuario buscarUsuarioPorId(Long id) throws SQLException {
+		String sql = "select * from usuario where id = ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+
+		stmt.setLong(1, id);
+
+		ResultSet rs = stmt.executeQuery();
+
+		if (rs.next()) {
+			return this.resultSetToUsuario(rs);
+		}
+		return null;
+	}
+
 	public List<Usuario> listar() throws SQLException {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		String sql = "select * from usuario";
