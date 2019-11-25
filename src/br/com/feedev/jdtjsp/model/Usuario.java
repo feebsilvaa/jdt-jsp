@@ -2,6 +2,8 @@ package br.com.feedev.jdtjsp.model;
 
 public class Usuario {
 
+	private Long id;
+
 	private String nome;
 
 	private String login;
@@ -15,6 +17,21 @@ public class Usuario {
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
+	}
+
+	public Usuario(Long id, String nome, String login, String senha) {
+		this.id = id;
+		this.nome = nome;
+		this.login = login;
+		this.senha = senha;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -50,7 +67,7 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [login=" + login + ", senha=" + senha + "]";
+		return "Usuario [id=" + id + ", nome=" + nome + ", login=" + login + ", senha=" + senha + "]";
 	}
 
 }

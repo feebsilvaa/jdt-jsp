@@ -31,12 +31,16 @@ public class UsuarioService {
 		dao.salvarUsuario(novoUsuario);
 	}
 
-	public void excluir(String login) throws SQLException {
-		dao.excluir(login);
+	public void excluir(Long id) throws SQLException {
+		dao.excluir(id);
 	}
 
-	public void editarUsuario(String oldLogin, Usuario usuario) throws SQLException {
-		dao.editarUsuario(oldLogin, usuario);
+	public void editarUsuario(Long id, Usuario usuario) throws SQLException {
+		dao.editarUsuario(id, usuario);
+	}
+
+	public Usuario buscarUsuarioPorId(Long id) throws SQLException {
+		return dao.buscarUsuarioPorId(id);
 	}
 
 }

@@ -59,6 +59,20 @@ public class UsuarioDao {
 		return null;
 	}
 
+	public Usuario buscarUsuarioPorId(Long id) throws SQLException {
+		String sql = "select * from usuario where id = ?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+
+		stmt.setLong(1, id);
+
+		ResultSet rs = stmt.executeQuery();
+
+		if (rs.next()) {
+			return this.resultSetToUsuario(rs);
+		}
+		return null;
+	}
+
 	public List<Usuario> listar() throws SQLException {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		String sql = "select * from usuario";
@@ -74,23 +88,23 @@ public class UsuarioDao {
 		return usuarios;
 	}
 
-	public void excluir(String login) throws SQLException {
-		String sql = "delete from usuario where login = ? ";
+	public void excluir(Long id) throws SQLException {
+		String sql = "delete from usuario where id = ? ";
 		PreparedStatement stmt = connection.prepareStatement(sql);
-		stmt.setString(1, login);
+		stmt.setLong(1, id);
 		stmt.execute();
 	}
 
-	public void editarUsuario(String oldLogin, Usuario usuario) throws SQLException {
-		String sql = "update usuario set nome = ? where login = ? ";
+	public void editarUsuario(Long id, Usuario usuario) throws SQLException {
+		String sql = "update usuario set nome = ? where id = ? ";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, usuario.getNome());
-		stmt.setString(2, oldLogin);
+		stmt.setLong(2, id);
 		stmt.executeUpdate();
 	}
 
 	private Usuario resultSetToUsuario(ResultSet rs) throws SQLException {
-		return new Usuario(rs.getString("nome"), rs.getString("login"), rs.getString("senha"));
+		return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("login"), rs.getString("senha"));
 	}
 
 
