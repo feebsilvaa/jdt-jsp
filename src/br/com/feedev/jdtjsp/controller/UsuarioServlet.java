@@ -38,6 +38,7 @@ public class UsuarioServlet extends HttpServlet {
 			return;
 		}
 
+		String idParam;
 		switch (acaoParam) {
 		case "listar":
 			this.listarUsuarios(request, response);
@@ -46,18 +47,18 @@ public class UsuarioServlet extends HttpServlet {
 			this.dispathTo("cadastra-usuario.jsp", request, response);
 			break;
 		case "excluir":
-			String loginParam = request.getParameter("user");
+			idParam = request.getParameter("id");
 			try {
-				this.excluirUsuario(loginParam);
+				this.excluirUsuario(Long.valueOf(idParam));
 				this.redirectTo("usuarios", response);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			break;
 		case "edicao":
-			String userParam = request.getParameter("user");
+			idParam = request.getParameter("id");
 			try {
-				Usuario usuario = usuarioService.buscarUsuarioPorLogin(userParam);
+				Usuario usuario = usuarioService.buscarUsuarioPorId(Long.valueOf(idParam));
 				request.setAttribute("usuario", usuario);
 				this.dispathTo("edita-usuario.jsp", request, response);
 			} catch (SQLException e) {
@@ -82,11 +83,11 @@ public class UsuarioServlet extends HttpServlet {
 			return;
 		}
 
+		String idParam;
 		String nomeParam;
 		String loginParam;
 		String senhaParam;
 		String confirmaSenhaParam;
-		String oldLoginParam;
 		switch (acaoParam) {
 		case "salvar":
 
@@ -130,14 +131,14 @@ public class UsuarioServlet extends HttpServlet {
 			this.listarUsuarios(request, response);
 			break;
 		case "editar":
-			oldLoginParam = request.getParameter("oldLogin");
+			idParam = request.getParameter("id");
 			nomeParam = request.getParameter("nome");
 			if (isFormValido(nomeParam)) {
 
 					try {
 						Usuario usuarioEditado = new Usuario();
 						usuarioEditado.setNome(nomeParam);
-						this.editarUsuario(oldLoginParam, usuarioEditado, request, response);
+						this.editarUsuario(Long.valueOf(idParam), usuarioEditado, request, response);
 						return;
 					} catch (SQLException e) {
 						e.printStackTrace();
@@ -169,13 +170,13 @@ public class UsuarioServlet extends HttpServlet {
 				&& (confirmaSenhaParam != null && !confirmaSenhaParam.isEmpty());
 	}
 
-	private void excluirUsuario(String loginParam) throws SQLException {
-		usuarioService.excluir(loginParam);
+	private void excluirUsuario(Long id) throws SQLException {
+		usuarioService.excluir(id);
 	}
 
-	private void editarUsuario(String oldLogin, Usuario usuario, HttpServletRequest request,
+	private void editarUsuario(Long id, Usuario usuario, HttpServletRequest request,
 			HttpServletResponse response) throws SQLException, IOException {
-		usuarioService.editarUsuario(oldLogin, usuario);
+		usuarioService.editarUsuario(id, usuario);
 		System.out.println("Editado com sucesso.");
 		request.setAttribute("usuarios", usuarioService.listar());
 		this.redirectTo("usuarios", response);

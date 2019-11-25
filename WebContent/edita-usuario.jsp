@@ -69,7 +69,7 @@
 							</div>
 							<div class="form-group">
 								<div class="form-label-group">
-									<input type="hidden" name="oldLogin" value="${ usuario.login }"
+									<input type="hidden" name="id" value="${ usuario.id }"
 										class="form-control">
 								</div>
 							</div>
