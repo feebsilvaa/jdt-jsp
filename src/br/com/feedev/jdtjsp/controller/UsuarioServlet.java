@@ -3,7 +3,6 @@ package br.com.feedev.jdtjsp.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.ServletException;
