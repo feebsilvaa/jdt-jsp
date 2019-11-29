@@ -1,6 +1,16 @@
 package br.com.feedev.jdtjsp.controller;
 
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.*;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_ERROR_MESSAGE;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_NOME_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_PASSWORD_CONFIRM_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_PASSWORD_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_TELEFONE_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_USERNAME_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ERR_GENERICO_MSG;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ERR_PARAMETROS_OBRIGATORIOS_MSG;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ERR_USER_SENHA_INCORRETO_MSG;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.PARAM_LOGIN;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.PARAM_SENHA;
 
 import java.io.IOException;
 import java.sql.SQLException;

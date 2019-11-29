@@ -1,14 +1,15 @@
 <html>
 <!-- Sidebar -->
-    <ul class="sidebar navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="usuarios">
-        	<i class="fas fa-home"></i>
-          <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
-          <span>Home</span>
-        </a>
-      </li>
-      <!-- <li class="nav-item dropdown">
+<ul class="sidebar navbar-nav">
+	<li class="nav-item active"><a class="nav-link" href="usuarios">
+			<i class="fas fa-users"></i> <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+			<span>Usuários</span>
+	</a></li>
+	<li class="nav-item"><a class="nav-link"
+		href="produtos"> <i
+			class="fas fa-shopping-basket"></i> <!-- <i class="fas fa-fw fa-chart-area"></i> -->
+			<span>Produtos</span></a></li>
+	<!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-folder"></i>
           <i class="fas fa-tools"></i>
@@ -25,16 +26,10 @@
           <a class="dropdown-item" href="blank.html">Blank Page</a>
         </div>
       </li> -->
-      <li class="nav-item">
-        <a class="nav-link" href="/jdt-jsp/usuarios?acao=cadastro">
-          <i class="fas fa-plus-square"></i>
-          <!-- <i class="fas fa-fw fa-chart-area"></i> -->
-          <span>Cadastro</span></a>
-      </li>
-      <!-- <li class="nav-item">
+	<!-- <li class="nav-item">
         <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-table"></i>
           <span>Tables</span></a>
       </li> -->
-    </ul>
+</ul>
 </html>

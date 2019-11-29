@@ -45,7 +45,7 @@
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Overview</li>
+					<li class="breadcrumb-item active">Usuários</li>
 				</ol>
 
 				<%-- <%
@@ -56,17 +56,15 @@
 	        <div class="alert alert-success" role="alert">
 			  <span>${ successMessageHeader }</span>
 			</div>	        
-        </c:if> --%>
-
-				<br>
+        </c:if> --%>	
 				<c:if test="${ errorMessage != null }">
 					<div class="alert alert-danger" role="alert">
 						<span>${ errorMessage }</span>
 					</div>
 				</c:if>
 
-
-				<!-- Icon Cards-->
+<!-- 
+				Icon Cards
 				<div class="row">
 					<div class="col-xl-3 col-sm-6 mb-3">
 						<div class="card text-white bg-primary o-hidden h-100">
@@ -129,8 +127,9 @@
 						</div>
 					</div>
 				</div>
-
-				<%-- <!-- Area Chart Example-->
+ -->
+ <%-- 
+				<!-- Area Chart Example-->
         <div class="card mb-3">
           <div class="card-header">
             <i class="fas fa-chart-area"></i>
@@ -139,7 +138,67 @@
             <canvas id="myAreaChart" width="100%" height="30"></canvas>
           </div>
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div> --%>
+        </div> 
+        --%>       
+        <!-- DataTables Example -->
+				<div class="card card-register mx-auto mt-5">
+					<div class="card-header">Cadastro de usuário</div>
+					<div class="card-body">
+						<form action="usuarios?acao=salvar" method="post">
+							<div class="form-group">
+								<div class="form-label-group">
+									<input type="text" name="nome" id="inputNome" value="${ nomeForm }"
+										class="form-control" placeholder="Nome" required="required">
+									<label for="inputNome">Nome</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-label-group">
+									<input type="text" name="telefone" id="inputTelefone" value="${ telefoneForm }"
+										class="form-control" placeholder="Nome">
+									<label for="inputTelefone">Telefone</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-label-group">
+									<input type="text" name="login" id="inputLogin" value="${ usernameForm }"
+										class="form-control" placeholder="Usuário" required="required">
+									<label for="inputLogin">Usuário</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col-md-6">
+										<div class="form-label-group">
+											<input type="password" name="senha" id="inputPassword" value="${ passwordForm }"
+												class="form-control" placeholder="Senha" required="required">
+											<label for="inputPassword">Senha</label>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-label-group">
+											<input type="password" name="confirmaSenha" value="${ passwordConfirmForm }"
+												id="confirmPassword" class="form-control"
+												placeholder="Confirmação de Senha" required="required">
+											<label for="confirmPassword">Confirmação de Senha</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<button class="btn btn-primary btn-block">Salvar</button>
+							<br>
+							<c:if test="${ errorMessage != null }">
+								<div class="alert alert-danger" role="alert">
+									<span>${ errorMessage }</span>
+								</div>
+							</c:if>
+						</form>
+					</div>
+				</div>
+				
+				<br>
+				<br>
+        
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
@@ -190,6 +249,11 @@
 									</c:if>
 								</tbody>
 							</table>
+
+							<div>
+								teste
+							
+							</div>
 						</div>
 					</div>
 					<div class="card-footer small text-muted">Updated yesterday

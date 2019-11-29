@@ -1,6 +1,11 @@
 package br.com.feedev.jdtjsp.controller;
 
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.*;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_ERROR_MESSAGE;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_NOME_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_PASSWORD_CONFIRM_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_PASSWORD_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_TELEFONE_FORM;
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_USERNAME_FORM;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -45,7 +50,7 @@ public class UsuarioServlet extends HttpServlet {
 				return;
 			} catch (NullPointerException  e) {
 				e.printStackTrace();
-				this.retornaErroForm("home.jsp", "Ocorreu um erro genérico.", null, request, response);
+				this.retornaErroForm("usuarios.jsp", "Ocorreu um erro genérico.", null, request, response);
 				return;
 			}
 			return;
@@ -62,12 +67,9 @@ public class UsuarioServlet extends HttpServlet {
 				return;
 			} catch (NullPointerException  e) {
 				e.printStackTrace();
-				this.retornaErroForm("home.jsp", "Ocorreu um erro genérico.", null, request, response);
+				this.retornaErroForm("usuarios.jsp", "Ocorreu um erro genérico.", null, request, response);
 				return;
 			}
-			break;
-		case "cadastro":
-			this.dispathTo("cadastra-usuario.jsp", request, response);
 			break;
 		case "excluir":
 			idParam = request.getParameter("id");
@@ -92,7 +94,7 @@ public class UsuarioServlet extends HttpServlet {
 				return;
 			} catch (NullPointerException  e) {
 				e.printStackTrace();
-				this.retornaErroForm("home.jsp", "Ocorreu um erro genérico.", null, request, response);
+				this.retornaErroForm("usuarios.jsp", "Ocorreu um erro genérico.", null, request, response);
 				return;
 			}
 			break;
@@ -105,7 +107,7 @@ public class UsuarioServlet extends HttpServlet {
 				return;
 			} catch (NullPointerException  e) {
 				e.printStackTrace();
-				this.retornaErroForm("home.jsp", "Ocorreu um erro genérico.", null, request, response);
+				this.retornaErroForm("usuarios.jsp", "Ocorreu um erro genérico.", null, request, response);
 				return;
 			}
 			break;
@@ -156,11 +158,11 @@ public class UsuarioServlet extends HttpServlet {
 							this.salvarUsuario(new Usuario(nomeParam, telefoneParam, loginParam, senhaParam), request,
 									response, params);
 						} catch (UsuarioExistenteException e) {
-							this.retornaErroForm("usuarios?acao=cadastro", e.getMessage(), params, request, response);
+							this.retornaErroForm("usuarios?acao=listar", e.getMessage(), params, request, response);
 							return;
 						} catch (NullPointerException  e) {
 							e.printStackTrace();
-							this.retornaErroForm("usuarios?acao=cadastro", "Ocorreu um erro genérico.", params, request, response);
+							this.retornaErroForm("usuarios?acao=listar", "Ocorreu um erro genérico.", params, request, response);
 							return;
 						}
 						request.setAttribute("usuarios", usuarioService.listar());
@@ -168,21 +170,21 @@ public class UsuarioServlet extends HttpServlet {
 						return;
 					} catch (SQLException e) {
 						e.printStackTrace();
-						this.retornaErroForm("usuarios?acao=cadastro", e.getMessage(), params, request, response);
+						this.retornaErroForm("usuarios?acao=listar", e.getMessage(), params, request, response);
 						return;
 					} catch (NullPointerException  e) {
 						e.printStackTrace();
-						this.retornaErroForm("usuarios?acao=cadastro", "Ocorreu um erro genérico.", params, request, response);
+						this.retornaErroForm("usuarios?acao=listar", "Ocorreu um erro genérico.", params, request, response);
 						return;
 					}
 
 				} else {
-					this.retornaErroForm("usuarios?acao=cadastro", "Senha e confirmação de senha não são iguais.",
+					this.retornaErroForm("usuarios?acao=listar", "Senha e confirmação de senha não são iguais.",
 							params, request, response);
 					return;
 				}
 			} else {
-				this.retornaErroForm("usuarios?acao=cadastro", "Parâmetros obrigatórios.", params, request, response);
+				this.retornaErroForm("usuarios?acao=listar", "Parâmetros obrigatórios.", params, request, response);
 				return;
 			}
 
@@ -206,16 +208,16 @@ public class UsuarioServlet extends HttpServlet {
 					return;
 				} catch (SQLException e) {
 					e.printStackTrace();
-					this.retornaErroForm("usuarios?acao=edicao", e.getMessage(), params, request, response);
+					this.retornaErroForm("usuarios?acao=listar", e.getMessage(), params, request, response);
 					return;
 				} catch (NullPointerException  e) {
 					e.printStackTrace();
-					this.retornaErroForm("usuarios?acao=edicao", "Ocorreu um erro genérico.", params, request, response);
+					this.retornaErroForm("usuarios?acao=listar", "Ocorreu um erro genérico.", params, request, response);
 					return;
 				}
 
 			} else {
-				this.retornaErroForm("usuarios?acao=edicao", "Parâmetros obrigatórios.", params, request, response);
+				this.retornaErroForm("usuarios?acao=listar", "Parâmetros obrigatórios.", params, request, response);
 				return;
 			}
 
@@ -279,7 +281,7 @@ public class UsuarioServlet extends HttpServlet {
 			throws ServletException, IOException, SQLException {
 		List<Usuario> usuarios = usuarioService.listar();
 		request.setAttribute("usuarios", usuarios);
-		this.dispathTo("home.jsp", request, response);
+		this.dispathTo("usuarios.jsp", request, response);
 	}
 
 	private void redirectTo(String view, HttpServletResponse response) throws IOException {
