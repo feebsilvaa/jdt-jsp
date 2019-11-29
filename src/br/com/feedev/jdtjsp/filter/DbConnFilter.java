@@ -29,14 +29,13 @@ public class DbConnFilter implements Filter {
 			throws IOException, ServletException {
 		try {
 			chain.doFilter(request, response);
-//			System.out.println("Commitando alterações...");
 			connection.commit();
 		} catch (Exception e) {
-			System.out.println("Erro ao realizar transação no banco de dados:");
+			System.out.println("Erro ao realizar transação no banco de dados.");
 			e.printStackTrace();
 			try {
 				connection.rollback();
-			} catch (SQLException e1) {
+			} catch (Exception e1) {
 				System.out.println("Erro ao realizar rollback no banco de dados: " + e1.getMessage());
 			}
 		}
