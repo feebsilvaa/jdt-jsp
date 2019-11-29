@@ -7,20 +7,15 @@ import br.com.feedev.jdtjsp.dao.UsuarioDao;
 import br.com.feedev.jdtjsp.model.Usuario;
 
 public class UsuarioService {
-	
+
 	private static UsuarioDao dao;
-	
+
 	public UsuarioService() {
 		dao = new UsuarioDao();
 	}
 
-	public List<Usuario> listar() {
-		try {
-			return dao.listar();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public List<Usuario> listar() throws SQLException {
+		return dao.listar();
 	}
 
 	public Usuario buscarUsuarioPorLogin(String login) throws SQLException {
