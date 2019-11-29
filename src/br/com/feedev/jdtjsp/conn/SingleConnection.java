@@ -17,14 +17,19 @@ public class SingleConnection {
 	private static Connection connection = null;
 	
 	static {
+		try {
+			conectar();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public SingleConnection() throws Exception {
 		conectar();
 	}
 	
-	public SingleConnection() {
-		conectar();
-	}
-	
-	private static void conectar() {
+	private static void conectar() throws Exception {
 		try {
 			
 			if (connection == null) {
@@ -36,7 +41,7 @@ public class SingleConnection {
 			System.out.println("Conectado com sucesso.");
 			
 		} catch (Exception e) {
-			throw new RuntimeException("Erro ao conectar ao banco de dados: " + e.getMessage());
+			throw new Exception("Erro ao conectar ao banco de dados: " + e.getMessage());
 		}
 	}
 	
@@ -44,16 +49,16 @@ public class SingleConnection {
 		return connection;
 	}
 	
-	public static void closeConnection() {
+	public static void closeConnection() throws Exception {
 		try {
 			connection.close();
 			System.out.println("Conexão fechada com sucesso.");
 		} catch (Exception e) {
-			throw new RuntimeException("Erro ao fechar conexão com o banco de dados." + e.getMessage());
+			throw new Exception("Erro ao fechar conexão com o banco de dados." + e.getMessage());
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		SingleConnection.getConnection();
 		SingleConnection.closeConnection();
 	}

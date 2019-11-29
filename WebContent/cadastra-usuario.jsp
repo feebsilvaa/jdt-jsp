@@ -62,6 +62,13 @@
 							</div>
 							<div class="form-group">
 								<div class="form-label-group">
+									<input type="text" name="telefone" id="inputTelefone" value="${ telefoneForm }"
+										class="form-control" placeholder="Nome">
+									<label for="inputTelefone">Telefone</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-label-group">
 									<input type="text" name="login" id="inputLogin" value="${ usernameForm }"
 										class="form-control" placeholder="Usuário" required="required">
 									<label for="inputLogin">Usuário</label>

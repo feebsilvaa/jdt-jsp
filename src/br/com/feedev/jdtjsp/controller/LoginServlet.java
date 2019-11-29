@@ -1,7 +1,10 @@
 package br.com.feedev.jdtjsp.controller;
 
+import static br.com.feedev.jdtjsp.config.ApplicationConstants.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,39 +21,64 @@ public class LoginServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final String VIEW_INDEX = "index.jsp";
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String loginParam = req.getParameter("login");
-		String senhaParam = req.getParameter("senha");
+		String loginParam = request.getParameter(PARAM_LOGIN);
+		String senhaParam = request.getParameter(PARAM_SENHA);
+
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("loginParam", loginParam);		
+		params.put("senhaParam", senhaParam);		
 		
 		if ((loginParam != null && !loginParam.isEmpty()) && (senhaParam != null && !senhaParam.isEmpty())) {
 
-			boolean autenticado = false;
 			try {
 				UsuarioDao dao = new UsuarioDao();
-				autenticado = dao.autentica(loginParam, senhaParam);
+				if (dao.autentica(loginParam, senhaParam)) {
+					// Chama proxima servlet
+					UsuarioServlet usuarioServlet = new UsuarioServlet();
+					usuarioServlet.doGet(request, response);
+				} else {
+					this.retornaErroForm(VIEW_INDEX, ERR_USER_SENHA_INCORRETO_MSG, params, request, response);
+					return;
+				}			
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
+				this.retornaErroForm(VIEW_INDEX, e.getMessage(), params, request, response);
+				return;
+			} catch (NullPointerException  e) {
+				e.printStackTrace();
+				this.retornaErroForm(VIEW_INDEX, ERR_GENERICO_MSG, params, request, response);
+				return;
 			}
 					
-			if (autenticado) {
-				UsuarioServlet usuarioServlet = new UsuarioServlet();
-				usuarioServlet.doGet(req, resp);
-//				resp.sendRedirect("home.jsp");
-			} else {
-				req.setAttribute("errorMessage", "Usuário e/ou Senha incorretos.");
-				req.setAttribute("usernameForm", loginParam);
-				req.setAttribute("passwordForm", senhaParam);
-				this.dispathTo("index.jsp", req, resp);
-			}
+			
 		} else {
-			resp.sendRedirect("index.jsp");	
+			this.retornaErroForm(VIEW_INDEX, ERR_PARAMETROS_OBRIGATORIOS_MSG, params, request, response);
+			return;
 		}
 	
 	}
+	
+	private void retornaErroForm(String view, String message, HashMap<String, String> params,
+			HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println(message);
+		request.setAttribute(ATTR_ERROR_MESSAGE, message);
+		if (params != null) {
+			request.setAttribute(ATTR_NOME_FORM, params.get("nomeParam"));
+			request.setAttribute(ATTR_TELEFONE_FORM, params.get("telefoneParam"));
+			request.setAttribute(ATTR_USERNAME_FORM, params.get("loginParam"));
+			request.setAttribute(ATTR_PASSWORD_FORM, params.get("senhaParam"));
+			request.setAttribute(ATTR_PASSWORD_CONFIRM_FORM, params.get("confirmaSenhaParam"));			
+		}
+		this.dispathTo(view, request, response);
+	}
 
+	
 	private void redirectTo(String view, HttpServletResponse response) throws IOException {
 		response.sendRedirect(view);
 	}

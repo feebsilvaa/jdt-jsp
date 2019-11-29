@@ -69,6 +69,13 @@
 							</div>
 							<div class="form-group">
 								<div class="form-label-group">
+									<input type="text" name="telefone" id="inputTelefone" value="${ usuario.telefone }"
+										class="form-control" placeholder="Nome">
+									<label for="inputTelefone">Telefone</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-label-group">
 									<input type="hidden" name="id" value="${ usuario.id }"
 										class="form-control">
 								</div>
