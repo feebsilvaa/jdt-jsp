@@ -1,4 +1,4 @@
-package br.com.feedev.jdtjsp.config;
+package br.com.feedev.jdtjsp.config.util;
 
 public class ApplicationConstants {
 
@@ -17,6 +17,10 @@ public class ApplicationConstants {
 	public final static String ATTR_PASSWORD_FORM = "passwordForm";
 	
 	public final static String ATTR_PASSWORD_CONFIRM_FORM = "passwordConfirmForm";
+
+	public static final String ATTR_PRECO_FORM = "precoForm";
+
+	public static final String ATTR_QUANTIDADE_FORM = "quantidadeForm";
 
 	public final static String ERR_GENERICO_MSG = "Ocorreu um erro! Contacte o administrador do sistema.";
 

@@ -9,6 +9,6 @@ public class UsuarioExistenteException extends Exception {
 
 	
 	public UsuarioExistenteException() {
-		super("Usuario já existe.");
+		super("Já existe um usuário com esse login.");
 	}
 }

@@ -1,6 +1,16 @@
-package br.com.feedev.jdtjsp.controller;
+package br.com.feedev.jdtjsp.controller.servlet;
 
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.*;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ATTR_ERROR_MESSAGE;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ATTR_NOME_FORM;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ATTR_PASSWORD_CONFIRM_FORM;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ATTR_PASSWORD_FORM;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ATTR_TELEFONE_FORM;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ATTR_USERNAME_FORM;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ERR_GENERICO_MSG;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ERR_PARAMETROS_OBRIGATORIOS_MSG;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.ERR_USER_SENHA_INCORRETO_MSG;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.PARAM_LOGIN;
+import static br.com.feedev.jdtjsp.config.util.ApplicationConstants.PARAM_SENHA;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,9 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.feedev.jdtjsp.dao.UsuarioDao;
+import br.com.feedev.jdtjsp.model.dao.UsuarioDao;
 
-@WebServlet(urlPatterns = { "/loginServlet" })
+@WebServlet(urlPatterns = { "/auth" })
 public class LoginServlet extends HttpServlet {
 
 	/**
@@ -38,9 +48,7 @@ public class LoginServlet extends HttpServlet {
 			try {
 				UsuarioDao dao = new UsuarioDao();
 				if (dao.autentica(loginParam, senhaParam)) {
-					// Chama proxima servlet
-					UsuarioServlet usuarioServlet = new UsuarioServlet();
-					usuarioServlet.doGet(request, response);
+					this.redirectTo("usuarios", response);
 				} else {
 					this.retornaErroForm(VIEW_INDEX, ERR_USER_SENHA_INCORRETO_MSG, params, request, response);
 					return;

@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>JDT JSP - Cadastro</title>
+<title>JDT JSP - Editar</title>
 
 <!-- Custom fonts for this template-->
 <link href="resources/static/vendor/fontawesome-free/css/all.min.css"
@@ -44,56 +44,56 @@
 
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="#">Cadasro</a></li>
-					<li class="breadcrumb-item active">Usuário</li>
+					<li class="breadcrumb-item"><a href="#">Editar</a></li>
+					<li class="breadcrumb-item active"><span>${ produto.nome }</span></li>
 				</ol>
 
 				<!-- DataTables Example -->
 				<div class="card card-register mx-auto mt-5">
-					<div class="card-header">Cadastro de usuário</div>
+					<div class="card-header">
+						Editar <span>${ produto.nome }</span>
+					</div>
 					<div class="card-body">
-						<form action="usuarios?acao=salvar" method="post">
+						<form action="produtos?acao=editar" method="post">
 							<div class="form-group">
 								<div class="form-label-group">
-									<input type="text" name="nome" id="inputNome" value="${ nomeForm }"
-										class="form-control" placeholder="Nome" required="required">
-									<label for="inputNome">Nome</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="telefone" id="inputTelefone" value="${ telefoneForm }"
-										class="form-control" placeholder="Nome">
-									<label for="inputTelefone">Telefone</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="login" id="inputLogin" value="${ usernameForm }"
-										class="form-control" placeholder="Usuário" required="required">
-									<label for="inputLogin">Usuário</label>
+									<input type="text" name="nome" id="inputNome"
+										value="${ produto.nome }" class="form-control"
+										placeholder="Nome" required="required"> <label
+										for="inputNome">Nome</label>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="form-row">
 									<div class="col-md-6">
-										<div class="form-label-group">
-											<input type="password" name="senha" id="inputPassword" value="${ passwordForm }"
-												class="form-control" placeholder="Senha" required="required">
-											<label for="inputPassword">Senha</label>
+										<div class="form-group">
+											<div class="form-label-group">
+												<input type="number" name="quantidade" id="inputQuantidade"
+													value="${ produto.quantidade }" class="form-control"
+													min="0" placeholder="Quantidade" required="required">
+												<label for="inputQuantidade">Quantidade</label>
+											</div>
 										</div>
 									</div>
 									<div class="col-md-6">
-										<div class="form-label-group">
-											<input type="password" name="confirmaSenha" value="${ passwordConfirmForm }"
-												id="confirmPassword" class="form-control"
-												placeholder="Confirmação de Senha" required="required">
-											<label for="confirmPassword">Confirmação de Senha</label>
+										<div class="form-group">
+											<div class="form-label-group">
+												<input type="number" name="preco" id="inputValor"
+													value="${ produto.preco }" class="form-control" min="0" max="999999999"
+													placeholder="Valor" required="required"> <label
+													for="inputValor">Valor</label>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<button class="btn btn-primary btn-block">Salvar</button>
+							<div class="form-group">
+								<div class="form-label-group">
+									<input type="hidden" name="id" value="${ produto.id }"
+										class="form-control">
+								</div>
+							</div>
+							<button class="btn btn-primary btn-block">Editar</button>
 							<br>
 							<c:if test="${ errorMessage != null }">
 								<div class="alert alert-danger" role="alert">

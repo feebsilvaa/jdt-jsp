@@ -1,4 +1,4 @@
-package br.com.feedev.jdtjsp.conn;
+package br.com.feedev.jdtjsp.config.conn;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
