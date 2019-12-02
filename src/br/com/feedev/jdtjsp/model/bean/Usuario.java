@@ -1,4 +1,4 @@
-package br.com.feedev.jdtjsp.model;
+package br.com.feedev.jdtjsp.model.bean;
 
 public class Usuario {
 

@@ -1,11 +1,4 @@
-package br.com.feedev.jdtjsp.controller;
-
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_ERROR_MESSAGE;
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_NOME_FORM;
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_PASSWORD_CONFIRM_FORM;
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_PASSWORD_FORM;
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_TELEFONE_FORM;
-import static br.com.feedev.jdtjsp.config.ApplicationConstants.ATTR_USERNAME_FORM;
+package br.com.feedev.jdtjsp.controller.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,9 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.feedev.jdtjsp.config.util.ApplicationConstants;
+import br.com.feedev.jdtjsp.controller.service.UsuarioService;
 import br.com.feedev.jdtjsp.exception.UsuarioExistenteException;
-import br.com.feedev.jdtjsp.model.Usuario;
-import br.com.feedev.jdtjsp.service.UsuarioService;
+import br.com.feedev.jdtjsp.model.bean.Usuario;
 
 @WebServlet(urlPatterns = { "/usuarios" })
 public class UsuarioServlet extends HttpServlet {
@@ -208,16 +202,16 @@ public class UsuarioServlet extends HttpServlet {
 					return;
 				} catch (SQLException e) {
 					e.printStackTrace();
-					this.retornaErroForm("usuarios?acao=listar", e.getMessage(), params, request, response);
+					this.retornaErroForm("usuarios?acao=edicao", e.getMessage(), params, request, response);
 					return;
 				} catch (NullPointerException  e) {
 					e.printStackTrace();
-					this.retornaErroForm("usuarios?acao=listar", "Ocorreu um erro genérico.", params, request, response);
+					this.retornaErroForm("usuarios?acao=edicao", "Ocorreu um erro genérico.", params, request, response);
 					return;
 				}
 
 			} else {
-				this.retornaErroForm("usuarios?acao=listar", "Parâmetros obrigatórios.", params, request, response);
+				this.retornaErroForm("usuarios?acao=edicao", "Parâmetros obrigatórios.", params, request, response);
 				return;
 			}
 
@@ -266,13 +260,13 @@ public class UsuarioServlet extends HttpServlet {
 	private void retornaErroForm(String view, String message, HashMap<String, String> params,
 			HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println(message);
-		request.setAttribute(ATTR_ERROR_MESSAGE, message);
+		request.setAttribute(ApplicationConstants.ATTR_ERROR_MESSAGE, message);
 		if (params != null) {
-			request.setAttribute(ATTR_NOME_FORM, params.get("nomeParam"));
-			request.setAttribute(ATTR_TELEFONE_FORM, params.get("telefoneParam"));
-			request.setAttribute(ATTR_USERNAME_FORM, params.get("loginParam"));
-			request.setAttribute(ATTR_PASSWORD_FORM, params.get("senhaParam"));
-			request.setAttribute(ATTR_PASSWORD_CONFIRM_FORM, params.get("confirmaSenhaParam"));			
+			request.setAttribute(ApplicationConstants.ATTR_NOME_FORM, params.get("nomeParam"));
+			request.setAttribute(ApplicationConstants.ATTR_TELEFONE_FORM, params.get("telefoneParam"));
+			request.setAttribute(ApplicationConstants.ATTR_USERNAME_FORM, params.get("loginParam"));
+			request.setAttribute(ApplicationConstants.ATTR_PASSWORD_FORM, params.get("senhaParam"));
+			request.setAttribute(ApplicationConstants.ATTR_PASSWORD_CONFIRM_FORM, params.get("confirmaSenhaParam"));			
 		}
 		this.dispathTo(view, request, response);
 	}

@@ -33,19 +33,21 @@
 		<div class="card card-login mx-auto mt-5">
 			<div class="card-header">Login</div>
 			<div class="card-body">
-				<form action="loginServlet" method="post">
+				<form action="auth" method="post"
+					onsubmit="return validaCampos() ? true : false;">
 					<div class="form-group">
 						<div class="form-label-group">
-							<input type="text" name="login" id="inputLogin" value="${ usernameForm }"
-								class="form-control" placeholder="Username" required="required"
-								autofocus="autofocus"> <label for="inputLogin">Username</label>
+							<input type="text" name="login" id="inputLogin"
+								value="${ usernameForm }" class="form-control"
+								placeholder="Username" autofocus="autofocus"> <label
+								for="inputLogin">Username</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="form-label-group">
-							<input type="password" name="senha" id="inputPassword" value="${ passwordForm }"
-								class="form-control" placeholder="Password" required="required">
-							<label for="inputPassword">Password</label>
+							<input type="password" name="senha" id="inputPassword"
+								value="${ passwordForm }" class="form-control"
+								placeholder="Password"> <label for="inputPassword">Password</label>
 						</div>
 					</div>
 					<div class="form-group">
@@ -62,11 +64,13 @@
 						class="d-block small" href="#">Forgot Password?</a>
 				</div>
 				<br>
-				<c:if test="${ errorMessage != null }">
-					<div class="alert alert-danger" role="alert">
-						<span>${ errorMessage }</span>
-					</div>
-				</c:if>
+				<div id="errorMessage">
+					<c:if test="${ errorMessage != null }">
+						<div class="alert alert-danger" role="alert">
+							<span>${ errorMessage }</span>
+						</div>
+					</c:if>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -79,6 +83,36 @@
 	<!-- Core plugin JavaScript-->
 	<script
 		src="resources/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<script type="text/javascript">
+		function validaCampos() {
+
+			let inputLoginVal = $('#inputLogin').val();
+			let inputSenhaVal = $('#inputPassword').val();
+
+			let errors = [];
+
+			if (inputLoginVal == '') {
+				errors.push("O campo usuário é de preenchimento obrigatório.");
+			}
+
+			if (inputSenhaVal == '') {
+				errors.push("O campo senha é de preenchimento obrigatório.");
+			}
+
+			if (errors.length > 0) {
+				$('#errorMessage')
+						.html(
+								'<div class="alert alert-danger" role="alert"><ul></ul></div>');
+				for (var i = 0; i < errors.length; i++) {
+					$('#errorMessage div ul').append('<li>' + errors[i] + '</li>');
+				}
+				
+				return false;
+			}
+			return true;
+		}
+	</script>
 
 </body>
 

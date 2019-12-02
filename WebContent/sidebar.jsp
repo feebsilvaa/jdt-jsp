@@ -1,7 +1,7 @@
 <html>
 <!-- Sidebar -->
 <ul class="sidebar navbar-nav">
-	<li class="nav-item active"><a class="nav-link" href="usuarios">
+	<li class="nav-item"><a class="nav-link" href="usuarios">
 			<i class="fas fa-users"></i> <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
 			<span>Usuários</span>
 	</a></li>

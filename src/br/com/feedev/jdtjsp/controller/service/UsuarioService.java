@@ -1,10 +1,10 @@
-package br.com.feedev.jdtjsp.service;
+package br.com.feedev.jdtjsp.controller.service;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import br.com.feedev.jdtjsp.dao.UsuarioDao;
-import br.com.feedev.jdtjsp.model.Usuario;
+import br.com.feedev.jdtjsp.model.bean.Usuario;
+import br.com.feedev.jdtjsp.model.dao.UsuarioDao;
 
 public class UsuarioService {
 

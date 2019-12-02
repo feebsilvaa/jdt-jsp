@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>JDT JSP - Home</title>
+<title>JDT JSP - Produtos</title>
 
 <!-- Custom fonts for this template-->
 <link href="resources/static/vendor/fontawesome-free/css/all.min.css"
@@ -45,7 +45,7 @@
 				<!-- Breadcrumbs-->
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Usuários</li>
+					<li class="breadcrumb-item active">Produtos</li>
 				</ol>
 
 				<%-- <%
@@ -56,14 +56,18 @@
 	        <div class="alert alert-success" role="alert">
 			  <span>${ successMessageHeader }</span>
 			</div>	        
-        </c:if> --%>	
-				<c:if test="${ errorMessage != null }">
-					<div class="alert alert-danger" role="alert">
-						<span>${ errorMessage }</span>
-					</div>
-				</c:if>
+        </c:if> --%>
 
-<!-- 
+
+				<div id="errorMessage">
+					<c:if test="${ errorMessage != null }">
+						<div class="alert alert-danger" role="alert">
+							<span>${ errorMessage }</span>
+						</div>
+					</c:if>
+				</div>
+
+				<!-- 
 				Icon Cards
 				<div class="row">
 					<div class="col-xl-3 col-sm-6 mb-3">
@@ -128,7 +132,7 @@
 					</div>
 				</div>
  -->
- <%-- 
+				<%-- 
 				<!-- Area Chart Example-->
         <div class="card mb-3">
           <div class="card-header">
@@ -139,71 +143,56 @@
           </div>
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div> 
-        --%>       
-        <!-- DataTables Example -->
+        --%>
+				<!-- DataTables Example -->
 				<div class="card card-register mx-auto mt-5">
-					<div class="card-header">Cadastro de usuário</div>
+					<div class="card-header">Cadastro de produto</div>
 					<div class="card-body">
-						<form action="usuarios?acao=salvar" method="post">
+						<form action="produtos?acao=salvar" method="post"
+							onsubmit="return validaCampos() ? true : false;">
 							<div class="form-group">
 								<div class="form-label-group">
-									<input type="text" name="nome" id="inputNome" value="${ nomeForm }"
-										class="form-control" placeholder="Nome" required="required">
+									<input type="text" name="nome" id="inputNome"
+										value="${ nomeForm }" class="form-control" placeholder="Nome">
 									<label for="inputNome">Nome</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="telefone" id="inputTelefone" value="${ telefoneForm }"
-										class="form-control" placeholder="Nome">
-									<label for="inputTelefone">Telefone</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="login" id="inputLogin" value="${ usernameForm }"
-										class="form-control" placeholder="Usuário" required="required">
-									<label for="inputLogin">Usuário</label>
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="form-row">
 									<div class="col-md-6">
-										<div class="form-label-group">
-											<input type="password" name="senha" id="inputPassword" value="${ passwordForm }"
-												class="form-control" placeholder="Senha" required="required">
-											<label for="inputPassword">Senha</label>
+										<div class="form-group">
+											<div class="form-label-group">
+												<input type="number" name="quantidade" id="inputQuantidade"
+													value="${ quantidadeForm }" class="form-control" min="0"
+													placeholder="Quantidade"> <label
+													for="inputQuantidade">Quantidade</label>
+											</div>
 										</div>
 									</div>
 									<div class="col-md-6">
-										<div class="form-label-group">
-											<input type="password" name="confirmaSenha" value="${ passwordConfirmForm }"
-												id="confirmPassword" class="form-control"
-												placeholder="Confirmação de Senha" required="required">
-											<label for="confirmPassword">Confirmação de Senha</label>
+										<div class="form-group">
+											<div class="form-label-group">
+												<input type="number" name="preco" id="inputValor"
+													value="${ precoForm }" class="form-control" min="0"
+													max="999999999" placeholder="Valor"> <label
+													for="inputValor">Valor</label>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							<button class="btn btn-primary btn-block">Salvar</button>
-							<br>
-							<c:if test="${ errorMessage != null }">
-								<div class="alert alert-danger" role="alert">
-									<span>${ errorMessage }</span>
-								</div>
-							</c:if>
 						</form>
 					</div>
 				</div>
-				
-				<br>
-				<br>
-        
+
+				<br> <br>
+
 
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Usuários
+						<i class="fas fa-table"></i> Produtos
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -212,52 +201,42 @@
 								<thead>
 									<tr>
 										<th>Nome</th>
-										<th>Telefone</th>
-										<th>Username</th>
-										<th>Senha</th>
+										<th>Quantidade</th>
+										<th>Valor</th>
 										<th>Ações</th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
 										<th>Nome</th>
-										<th>Telefone</th>
-										<th>Username</th>
-										<th>Senha</th>
+										<th>Quantidade</th>
+										<th>Valor</th>
 										<th>Ações</th>
 									</tr>
 								</tfoot>
 								<tbody>
 									<c:catch var="err">
-										<c:forEach items="${ usuarios }" var="usuario">
+										<c:forEach items="${ produtos }" var="produto">
 											<tr>
-												<td><span>${ usuario.nome }</span></td>
-												<td><span>${ usuario.telefone }</span></td>
-												<td><span>${ usuario.login }</span></td>
-												<td><span>${ usuario.senha }</span></td>
+												<td><span>${ produto.nome }</span></td>
+												<td><span>${ produto.quantidade }</span></td>
+												<td><span>R$ ${ produto.preco }</span></td>
 												<td><a class="btn btn-outline-dark"
-													href="usuarios?acao=edicao&id=${ usuario.id }"><i
+													href="produtos?acao=edicao&id=${ produto.id }"><i
 														class="fas fa-edit"></i></a> <a class="btn btn-outline-dark"
-													onclick="fillModal('${ usuario.id }')" data-toggle="modal"
+													onclick="fillModal('${ produto.id }')" data-toggle="modal"
 													data-target="#confirmaExclusaoModal"><i
 														class="fas fa-trash"></i></a></td>
 											</tr>
 										</c:forEach>
 									</c:catch>
-									<c:if test="err">
-										<span>${ err.message }</span>
-									</c:if>
 								</tbody>
 							</table>
-
-							<div>
-								teste
-							
-							</div>
 						</div>
 					</div>
-					<div class="card-footer small text-muted">Updated yesterday
-						at 11:59 PM</div>
+					<div
+						class="card-footer small text-mutATTR_TELEFONE_FORM, params.get("telefoneParam")ed">Updated
+						yesterday at 11:59 PM</div>
 				</div>
 
 			</div>
@@ -305,7 +284,7 @@
 		function fillModal(id) {
 			console.log(id);
 			$('#btnConfirmaExclusaoModal').attr("href",
-					"usuarios?acao=excluir&id=" + id);
+					"produtos?acao=excluir&id=" + id);
 		}
 	</script>
 
@@ -331,6 +310,42 @@
 	<!-- Demo scripts for this page-->
 	<script src="resources/static/js/demo/datatables-demo.js"></script>
 	<script src="resources/static/js/demo/chart-area-demo.js"></script>
+	<script type="text/javascript">
+		function validaCampos() {
+
+			let inputNomeVal = $('#inputNome').val();
+			let inputQuantidadeVal = $('#inputQuantidade').val();
+			let inputValorVal = $('#inputValor').val();
+
+			let errors = [];
+
+			if (inputNomeVal == '') {
+				errors.push("O campo nome é de preenchimento obrigatório.");
+			}
+
+			if (inputQuantidadeVal == '') {
+				errors.push("O campo quantidade é de preenchimento obrigatório.");
+			}
+
+			if (inputValorVal == '') {
+				errors.push("O campo valor é de preenchimento obrigatório.");
+			}
+
+			if (errors.length > 0) {
+				$('#errorMessage')
+						.html(
+								'<div class="alert alert-danger" role="alert"><ul></ul></div>');
+				for (var i = 0; i < errors.length; i++) {
+					$('#errorMessage div ul').append(
+							'<li>' + errors[i] + '</li>');
+				}
+
+				return false;
+			}
+			return true;
+		}
+	</script>
+
 
 </body>
 

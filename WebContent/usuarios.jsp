@@ -57,11 +57,14 @@
 			  <span>${ successMessageHeader }</span>
 			</div>	        
         </c:if> --%>
-				<c:if test="${ errorMessage != null }">
-					<div class="alert alert-danger" role="alert">
-						<span>${ errorMessage }</span>
-					</div>
-				</c:if>
+
+				<div id="errorMessage">
+					<c:if test="${ errorMessage != null }">
+						<div class="alert alert-danger" role="alert">
+							<span>${ errorMessage }</span>
+						</div>
+					</c:if>
+				</div>
 
 				<!-- 
 				Icon Cards
@@ -144,12 +147,13 @@
 				<div class="card card-register mx-auto mt-5">
 					<div class="card-header">Cadastro de usuário</div>
 					<div class="card-body">
-						<form action="usuarios?acao=salvar" method="post">
+						<form action="usuarios?acao=salvar" method="post"
+							onsubmit="return validaCampos() ? true : false;">
 							<div class="form-group">
 								<div class="form-label-group">
 									<input type="text" name="nome" id="inputNome"
-										value="${ nomeForm }" class="form-control" placeholder="Nome"
-										required="required"> <label for="inputNome">Nome</label>
+										value="${ nomeForm }" class="form-control" placeholder="Nome">
+									<label for="inputNome">Nome</label>
 								</div>
 							</div>
 							<div class="form-group">
@@ -163,8 +167,7 @@
 								<div class="form-label-group">
 									<input type="text" name="login" id="inputLogin"
 										value="${ usernameForm }" class="form-control"
-										placeholder="Usuário" required="required"> <label
-										for="inputLogin">Usuário</label>
+										placeholder="Usuário"> <label for="inputLogin">Usuário</label>
 								</div>
 							</div>
 							<div class="form-group">
@@ -173,17 +176,15 @@
 										<div class="form-label-group">
 											<input type="password" name="senha" id="inputPassword"
 												value="${ passwordForm }" class="form-control"
-												placeholder="Senha" required="required"> <label
-												for="inputPassword">Senha</label>
+												placeholder="Senha"> <label for="inputPassword">Senha</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-label-group">
 											<input type="password" name="confirmaSenha"
 												value="${ passwordConfirmForm }" id="confirmPassword"
-												class="form-control" placeholder="Confirmação de Senha"
-												required="required"> <label for="confirmPassword">Confirmação
-												de Senha</label>
+												class="form-control" placeholder="Confirmação de Senha">
+											<label for="confirmPassword">Confirmação de Senha</label>
 										</div>
 									</div>
 								</div>
@@ -245,8 +246,6 @@
 									</c:if>
 								</tbody>
 							</table>
-
-							<div>teste</div>
 						</div>
 					</div>
 					<div class="card-footer small text-muted">Updated yesterday
@@ -325,6 +324,51 @@
 	<script src="resources/static/js/demo/datatables-demo.js"></script>
 	<script src="resources/static/js/demo/chart-area-demo.js"></script>
 
+	<script type="text/javascript">
+		function validaCampos() {
+
+			let inputNomeVal = $('#inputNome').val();
+			let inputLoginVal = $('#inputLogin').val();
+			let inputSenhaVal = $('#inputPassword').val();
+			let inputSenhaConfirmVal = $('#confirmPassword').val();
+
+			let errors = [];
+
+			if (inputNomeVal == '') {
+				errors.push("O campo nome é de preenchimento obrigatório.");
+			}
+
+			if (inputLoginVal == '') {
+				errors.push("O campo usuário é de preenchimento obrigatório.");
+			}
+
+			if (inputSenhaVal == '') {
+				errors.push("O campo senha é de preenchimento obrigatório.");
+			}
+
+			if (inputSenhaConfirmVal == '') {
+				errors
+						.push("O campo confirmação de senha é de preenchimento obrigatório.");
+			}
+
+			if (inputSenhaVal != inputSenhaConfirmVal) {
+				errors.push("Senha e confirmação de senha são diferentes.");
+			}
+
+			if (errors.length > 0) {
+				$('#errorMessage')
+						.html(
+								'<div class="alert alert-danger" role="alert"><ul></ul></div>');
+				for (var i = 0; i < errors.length; i++) {
+					$('#errorMessage div ul').append(
+							'<li>' + errors[i] + '</li>');
+				}
+
+				return false;
+			}
+			return true;
+		}
+	</script>
 </body>
 
 </html>
