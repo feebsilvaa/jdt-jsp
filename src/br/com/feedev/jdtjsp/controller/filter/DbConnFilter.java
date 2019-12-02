@@ -1,4 +1,4 @@
-package br.com.feedev.jdtjsp.filter;
+package br.com.feedev.jdtjsp.controller.filter;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-import br.com.feedev.jdtjsp.conn.SingleConnection;
+import br.com.feedev.jdtjsp.config.conn.SingleConnection;
 
 /**
  * Servlet Filter implementation class DbConnFilter

@@ -1,4 +1,4 @@
-package br.com.feedev.jdtjsp.dao;
+package br.com.feedev.jdtjsp.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.feedev.jdtjsp.conn.SingleConnection;
-import br.com.feedev.jdtjsp.model.Usuario;
+import br.com.feedev.jdtjsp.config.conn.SingleConnection;
+import br.com.feedev.jdtjsp.model.bean.Usuario;
 
 public class UsuarioDao {
 
