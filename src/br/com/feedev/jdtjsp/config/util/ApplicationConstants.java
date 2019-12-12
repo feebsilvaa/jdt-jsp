@@ -12,6 +12,20 @@ public class ApplicationConstants {
 	
 	public final static String ATTR_TELEFONE_FORM = "telefoneForm";
 	
+	public final static String ATTR_CEP_FORM = "cepForm";
+	
+	public final static String ATTR_LOGRADOURO_FORM = "logradouroForm";
+	
+	public final static String ATTR_NUMERO_FORM = "numeroForm";
+	
+	public final static String ATTR_COMPLEMENTO_FORM = "complementoForm";
+	
+	public final static String ATTR_BAIRRO_FORM = "bairroForm";
+	
+	public final static String ATTR_CIDADE_FORM = "cidadeForm";
+	
+	public final static String ATTR_ESTADO_FORM = "estadoForm";
+	
 	public final static String ATTR_USERNAME_FORM = "usernameForm";
 	
 	public final static String ATTR_PASSWORD_FORM = "passwordForm";

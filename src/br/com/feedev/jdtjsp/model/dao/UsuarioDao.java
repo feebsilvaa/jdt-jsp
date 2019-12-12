@@ -34,13 +34,26 @@ public class UsuarioDao {
 	}
 
 	public void salvarUsuario(Usuario usuario) throws SQLException {
-		String sql = "insert into usuario (nome, telefone, login, senha) values (?, ?, ?, ?)";
+		String sql = ""
+				+ "insert into usuario "
+				+ "(nome, telefone, cep, logradouro, numero, "
+				+ "complemento, bairro, cidade, estado, login, senha) "
+				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
+		System.out.println("Salvando usuario: " + usuario);
+		
 		stmt.setString(1, usuario.getNome());
 		stmt.setString(2, usuario.getTelefone());
-		stmt.setString(3, usuario.getLogin());
-		stmt.setString(4, usuario.getSenha());
+		stmt.setString(3, usuario.getCep());
+		stmt.setString(4, usuario.getLogradouro());
+		stmt.setString(5, usuario.getNumero());
+		stmt.setString(6, usuario.getComplemento());
+		stmt.setString(7, usuario.getBairro());
+		stmt.setString(8, usuario.getCidade());
+		stmt.setString(9, usuario.getEstado());
+		stmt.setString(10, usuario.getLogin());
+		stmt.setString(11, usuario.getSenha());
 
 		stmt.execute();
 
@@ -110,7 +123,8 @@ public class UsuarioDao {
 	}
 
 	private Usuario resultSetToUsuario(ResultSet rs) throws SQLException {
-		return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), rs.getString("login"),
+		return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), rs.getString("cep"), rs.getString("logradouro"), rs.getString("numero"), 
+				rs.getString("complemento"), rs.getString("bairro"), rs.getString("cidade"), rs.getString("estado"), rs.getString("login"),
 				rs.getString("senha"));
 	}
 

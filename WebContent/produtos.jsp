@@ -221,12 +221,19 @@
 												<td><span>${ produto.nome }</span></td>
 												<td><span>${ produto.quantidade }</span></td>
 												<td><span>R$ ${ produto.preco }</span></td>
-												<td><a class="btn btn-outline-dark"
-													href="produtos?acao=edicao&id=${ produto.id }"><i
-														class="fas fa-edit"></i></a> <a class="btn btn-outline-dark"
-													onclick="fillModal('${ produto.id }')" data-toggle="modal"
-													data-target="#confirmaExclusaoModal"><i
-														class="fas fa-trash"></i></a></td>
+												<td>
+													<label for="icoEditar" data-toggle="tooltip" data-placement="top" title="Editar">
+														<a id="icoEditar" class="btn btn-outline-dark" href="produtos?acao=edicao&id=${ produto.id }">
+															<i class="fas fa-edit"></i>
+														</a>
+													</label>
+													<label for="icoExcluir" data-toggle="tooltip" data-placement="top" title="Excluir">
+														 <a id="icoExcluir" class="btn btn-outline-dark" onclick="fillModal('${ produto.id }')" 
+														 	data-toggle="modal" data-target="#confirmaExclusaoModal">
+														 	<i class="fas fa-trash"></i>
+													 	</a>
+													</label> 	
+											 	</td>
 											</tr>
 										</c:forEach>
 									</c:catch>

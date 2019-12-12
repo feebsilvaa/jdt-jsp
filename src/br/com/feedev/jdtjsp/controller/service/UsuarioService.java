@@ -5,13 +5,16 @@ import java.util.List;
 
 import br.com.feedev.jdtjsp.model.bean.Usuario;
 import br.com.feedev.jdtjsp.model.dao.UsuarioDao;
+import br.com.feedev.jdtjsp.model.dao.UsuarioFileUploadsDao;
 
 public class UsuarioService {
 
 	private static UsuarioDao dao;
+	private static UsuarioFileUploadsDao fileDao;
 
 	public UsuarioService() {
 		dao = new UsuarioDao();
+		fileDao = new UsuarioFileUploadsDao();
 	}
 
 	public List<Usuario> listar() throws SQLException {
@@ -24,6 +27,15 @@ public class UsuarioService {
 
 	public void salvarUsuario(Usuario novoUsuario) throws SQLException {
 		dao.salvarUsuario(novoUsuario);
+		Usuario usuarioSalvo = dao.buscarUsuarioPorLogin(novoUsuario.getLogin());
+		if (novoUsuario.getFotoFile() != null) {
+			System.out.println("Salvando foto...");
+			fileDao.salvarFile(novoUsuario.getFotoFile(), usuarioSalvo.getId());
+		}
+		if (novoUsuario.getPdfFile() != null) {
+			System.out.println("Salvando pdf...");
+			fileDao.salvarFile(novoUsuario.getPdfFile(), usuarioSalvo.getId());
+		}
 	}
 
 	public void excluir(Long id) throws SQLException {

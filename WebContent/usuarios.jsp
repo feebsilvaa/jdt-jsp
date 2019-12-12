@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -143,53 +144,152 @@
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div> 
         --%>
-				<!-- DataTables Example -->
 				<div class="card card-register mx-auto mt-5">
 					<div class="card-header">Cadastro de usuário</div>
 					<div class="card-body">
 						<form action="usuarios?acao=salvar" method="post"
+							enctype="multipart/form-data"
 							onsubmit="return validaCampos() ? true : false;">
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="nome" id="inputNome"
-										value="${ nomeForm }" class="form-control" placeholder="Nome">
-									<label for="inputNome">Nome</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="telefone" id="inputTelefone"
-										value="${ telefoneForm }" class="form-control"
-										placeholder="Nome"> <label for="inputTelefone">Telefone</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="login" id="inputLogin"
-										value="${ usernameForm }" class="form-control"
-										placeholder="Usuário"> <label for="inputLogin">Usuário</label>
-								</div>
-							</div>
+
 							<div class="form-group">
 								<div class="form-row">
 									<div class="col-md-6">
 										<div class="form-label-group">
-											<input type="password" name="senha" id="inputPassword"
-												value="${ passwordForm }" class="form-control"
-												placeholder="Senha"> <label for="inputPassword">Senha</label>
+											<input type="text" name="nome" id="inputNome"
+												value="${ nomeForm }" class="form-control"
+												placeholder="Nome"> <label for="inputNome">Nome
+												*</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-label-group">
-											<input type="password" name="confirmaSenha"
-												value="${ passwordConfirmForm }" id="confirmPassword"
-												class="form-control" placeholder="Confirmação de Senha">
-											<label for="confirmPassword">Confirmação de Senha</label>
+											<input type="text" name="telefone" id="inputTelefone"
+												value="${ telefoneForm }" class="form-control"
+												placeholder="Telefone"> <label for="inputTelefone">Telefone</label>
 										</div>
 									</div>
 								</div>
 							</div>
-							<button class="btn btn-primary btn-block">Salvar</button>
+
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col-md-3">
+										<div class="form-label-group">
+											<input type="text" name="cep" id="inputCEP"
+												value="${ cepForm }" class="form-control" placeholder="CEP">
+											<label for="inputCEP">CEP *</label>
+										</div>
+									</div>
+									<div class="col-md-7">
+										<div class="form-label-group">
+											<input type="text" name="logradouro" id="inputLogradouro"
+												value="${ logradouroForm }" class="form-control"
+												placeholder="Logradouro"> <label
+												for="inputLogradouro">Logradouro *</label>
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-label-group">
+											<input type="text" name="numero" id="inputNumero"
+												value="${ numeroForm }" class="form-control"
+												placeholder="Numero"> <label for="inputNumero">Numero
+												*</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col-md-3">
+										<div class="form-label-group">
+											<input type="text" name="complemento" id="inputComplemento"
+												value="${ complementoForm }" class="form-control"
+												placeholder="Complemento"> <label
+												for="inputComplemento">Complemento</label>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-label-group">
+											<input type="text" name="bairro" id="inputBairro"
+												value="${ bairroForm }" class="form-control"
+												placeholder="Bairro"> <label for="inputBairro">Bairro
+												*</label>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="form-label-group">
+											<input type="text" name="cidade" id="inputCidade"
+												value="${ cidadeForm }" class="form-control"
+												placeholder="Cidade"> <label for="inputCidade">Cidade
+												*</label>
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-label-group">
+											<input type="text" name="estado" id="inputEstado"
+												value="${ estadoForm }" class="form-control"
+												placeholder="Estado"> <label for="inputEstado">Estado
+												*</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col-md-4">
+										<div class="form-label-group">
+											<input type="text" name="login" id="inputLogin"
+												value="${ usernameForm }" class="form-control"
+												placeholder="Usuário"> <label for="inputLogin">Usuário
+												*</label>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-label-group">
+											<input type="password" name="senha" id="inputPassword"
+												value="${ passwordForm }" class="form-control"
+												placeholder="Senha"> <label for="inputPassword">Senha
+												*</label>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-label-group">
+											<input type="password" name="confirmaSenha"
+												value="${ passwordConfirmForm }" id="confirmPassword"
+												class="form-control" placeholder="Confirmação de Senha">
+											<label for="confirmPassword">Confirmação de Senha *</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-md-4">
+									<div class="custom-file">
+										<input type="file" name="foto" id="foto"
+											class="custom-file-input" accept="image/*"> 
+											<label class="custom-file-label"
+											for="foto">Escolha uma foto...</label>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="custom-file">
+										<input type="file" name="pdf" id="pdf"
+											class="custom-file-input" accept="application/pdf"> 
+											<label class="custom-file-label"
+											for="pdf">Escolha um PDF...</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="offset-md-10 col-md-2">
+									<div class="form-group">
+										<button class="btn btn-primary btn-block">Salvar</button>
+									</div>
+								</div>
+							</div>
 						</form>
 					</div>
 				</div>
@@ -204,12 +304,12 @@
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%"
-								cellspacing="0">
+							<table class="table table-bordered" id="dataTable">
 								<thead>
 									<tr>
 										<th>Nome</th>
 										<th>Telefone</th>
+										<th>Endereço</th>
 										<th>Username</th>
 										<th>Senha</th>
 										<th>Ações</th>
@@ -219,6 +319,7 @@
 									<tr>
 										<th>Nome</th>
 										<th>Telefone</th>
+										<th>Endereço</th>
 										<th>Username</th>
 										<th>Senha</th>
 										<th>Ações</th>
@@ -230,14 +331,23 @@
 											<tr>
 												<td><span>${ usuario.nome }</span></td>
 												<td><span>${ usuario.telefone }</span></td>
+												<td><span>${ usuario.endereco }</span></td>
 												<td><span>${ usuario.login }</span></td>
 												<td><span>${ usuario.senha }</span></td>
-												<td><a class="btn btn-outline-dark"
-													href="usuarios?acao=edicao&id=${ usuario.id }"><i
-														class="fas fa-edit"></i></a> <a class="btn btn-outline-dark"
-													onclick="fillModal('${ usuario.id }')" data-toggle="modal"
-													data-target="#confirmaExclusaoModal"><i
-														class="fas fa-trash"></i></a></td>
+												<td><label for="icoEditar" data-toggle="tooltip"
+													data-placement="top" title="Editar"> <a
+														id="icoEditar" class="btn btn-outline-dark"
+														href="usuarios?acao=edicao&id=${ usuario.id }"> <i
+															class="fas fa-edit"></i>
+													</a>
+												</label> <label for="icoExcluir" data-toggle="tooltip"
+													data-placement="top" title="Excluir"> <a
+														id="icoExcluir" class="btn btn-outline-dark"
+														onclick="fillModal('${ usuario.id }')" data-toggle="modal"
+														data-target="#confirmaExclusaoModal"> <i
+															class="fas fa-trash"></i>
+													</a>
+												</label></td>
 											</tr>
 										</c:forEach>
 									</c:catch>
@@ -305,6 +415,9 @@
 	<!-- Bootstrap core JavaScript-->
 	<script src="resources/static/vendor/jquery/jquery.min.js"></script>
 	<script
+		src="resources/static/vendor/bootstrap/js/bs-custom-file-input.min.js"
+		type="text/javascript"></script>
+	<script
 		src="resources/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 	<!-- Core plugin JavaScript-->
@@ -324,50 +437,12 @@
 	<script src="resources/static/js/demo/datatables-demo.js"></script>
 	<script src="resources/static/js/demo/chart-area-demo.js"></script>
 
+	<script src="resources/static/js/form_usuarios_validator.js"></script>
+
 	<script type="text/javascript">
-		function validaCampos() {
-
-			let inputNomeVal = $('#inputNome').val();
-			let inputLoginVal = $('#inputLogin').val();
-			let inputSenhaVal = $('#inputPassword').val();
-			let inputSenhaConfirmVal = $('#confirmPassword').val();
-
-			let errors = [];
-
-			if (inputNomeVal == '') {
-				errors.push("O campo nome é de preenchimento obrigatório.");
-			}
-
-			if (inputLoginVal == '') {
-				errors.push("O campo usuário é de preenchimento obrigatório.");
-			}
-
-			if (inputSenhaVal == '') {
-				errors.push("O campo senha é de preenchimento obrigatório.");
-			}
-
-			if (inputSenhaConfirmVal == '') {
-				errors
-						.push("O campo confirmação de senha é de preenchimento obrigatório.");
-			}
-
-			if (inputSenhaVal != inputSenhaConfirmVal) {
-				errors.push("Senha e confirmação de senha são diferentes.");
-			}
-
-			if (errors.length > 0) {
-				$('#errorMessage')
-						.html(
-								'<div class="alert alert-danger" role="alert"><ul></ul></div>');
-				for (var i = 0; i < errors.length; i++) {
-					$('#errorMessage div ul').append(
-							'<li>' + errors[i] + '</li>');
-				}
-
-				return false;
-			}
-			return true;
-		}
+		$(document).ready(function() {
+			bsCustomFileInput.init()
+		});
 	</script>
 </body>
 
