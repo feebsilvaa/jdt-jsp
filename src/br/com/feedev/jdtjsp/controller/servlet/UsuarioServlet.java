@@ -1,8 +1,8 @@
 package br.com.feedev.jdtjsp.controller.servlet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.HashMap;
@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.postgresql.util.PSQLException;
 
@@ -67,7 +65,7 @@ public class UsuarioServlet extends HttpServlet {
 		case "listar":
 			try {
 				this.listarUsuarios(request, response);
-			}  catch (PSQLException | NullPointerException e) {
+			} catch (PSQLException | NullPointerException e) {
 				e.printStackTrace();
 				this.retornaErroForm("usuarios.jsp", "Ocorreu um erro genérico.", null, request, response);
 				return;
@@ -126,8 +124,15 @@ public class UsuarioServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// setando encoding do request
 		request.setCharacterEncoding("UTF-8");
+
+		String acaoParam = request.getParameter("acao");
 		
-		String idParam;
+		if (acaoParam == null) {
+			doGet(request, response);
+			return;
+		}
+		
+		String idParam = null;
 		String nomeParam = null;
 		String telefoneParam = null;
 		String cepParam = null;
@@ -144,100 +149,37 @@ public class UsuarioServlet extends HttpServlet {
 		File2Upload pdfFile = null;
 
 		HashMap<String, String> params = new HashMap<String, String>();
-		
-		try {
-			// FILE UPLOAD de imagem e pdf
-			if (ServletFileUpload.isMultipartContent(request)) {
-				List<FileItem> files = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-				for (FileItem fileItem : files) {
-
-					if (fileItem.getFieldName().equals("id")) {
-						idParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("nome")) {
-						nomeParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("telefone")) {
-						telefoneParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("cep")) {
-						cepParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("logradouro")) {
-						logradouroParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("numero")) {
-						numeroParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("complemento")) {
-						complementoParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("bairro")) {
-						bairroParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("cidade")) {
-						cidadeParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("numero")) {
-						numeroParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("estado")) {
-						estadoParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("login")) {
-						loginParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("senha")) {
-						senhaParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("confirmaSenha")) {
-						confirmaSenhaParam = fileItem.getString();
-					}
-					if (fileItem.getFieldName().equals("foto")) {
-						byte[] fotoB64 = fileItem.get(); // Base64 array
-						if (fotoB64.length > 0) {
-							fotoFile = new File2Upload();
-							fotoFile.setFileB64(Base64.getEncoder().encodeToString(fotoB64)); // Base64 array to String
-							fotoFile.setFileName(fileItem.getName());
-							fotoFile.setFileSize(fileItem.getSize());
-							fotoFile.setFileType(fileItem.getContentType());
-	//						System.out.println(fotoFile);						
-						}
-					}
-					if (fileItem.getFieldName().equals("pdf")) {
-						byte[] pdfB64 = fileItem.get(); // Base64 array
-						if (pdfB64.length > 0) {
-							pdfFile = new File2Upload();
-							pdfFile.setFileB64(Base64.getEncoder().encodeToString(pdfB64)); // Base64 array to String
-							pdfFile.setFileName(fileItem.getName());
-							pdfFile.setFileSize(fileItem.getSize());
-							pdfFile.setFileType(fileItem.getContentType());
-	//						System.out.println(pdfFile);							
-						}
-					}
-				}
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}			
-
-		String acaoParam = request.getParameter("acao");
-
-		if (acaoParam == null) {
-			doGet(request, response);
-			return;
-		}
 
 		switch (acaoParam) {
 		case "salvar":
+
+			idParam = request.getParameter("id");
+			nomeParam = request.getParameter("nome");
+			telefoneParam = request.getParameter("telefone");
+			cepParam = request.getParameter("cep");
+			logradouroParam = request.getParameter("logradouro");
+			numeroParam = request.getParameter("numero");
+			complementoParam = request.getParameter("complemento");
+			bairroParam = request.getParameter("bairro");
+			cidadeParam = request.getParameter("cidade");
+			estadoParam = request.getParameter("estado");
+			loginParam = request.getParameter("login");
+			senhaParam = request.getParameter("senha");
+			confirmaSenhaParam = request.getParameter("confirmaSenha");
 			
-			Usuario userForm = new Usuario(null, nomeParam, telefoneParam, cepParam, logradouroParam, numeroParam,
-					complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam,
-					confirmaSenhaParam, fotoFile, pdfFile);
-			
-			System.out.println(userForm);
-			
+			try {
+				// FILE UPLOAD de imagem e pdf
+				if (ServletFileUpload.isMultipartContent(request)) {
+					Part fotoPart = request.getPart("foto");
+					fotoFile = Part2FileObj(fotoPart);
+					
+					Part pdfPart = request.getPart("pdf");
+					pdfFile = Part2FileObj(pdfPart);			
+				}	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			// TODO: REFATORAR A DEVOLUCAO DE PARAMETROS
 			params.put("nomeParam", nomeParam);
 			params.put("telefoneParam", telefoneParam);
@@ -251,14 +193,25 @@ public class UsuarioServlet extends HttpServlet {
 			params.put("loginParam", loginParam);
 			params.put("senhaParam", senhaParam);
 			params.put("confirmaSenhaParam", confirmaSenhaParam);
+			if (fotoFile != null) {
+				params.put("fotoParam", fotoFile.getFileB64());
+			}
+			if (pdfFile != null) {
+				params.put("pdfParam", pdfFile.getFileB64());
+			}
+
+			Usuario userForm = new Usuario(null, nomeParam, telefoneParam, cepParam, logradouroParam, numeroParam,
+					complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam, confirmaSenhaParam,
+					fotoFile, pdfFile);
+
+			System.out.println(userForm);
 
 			if (isFormValido(userForm)) {
 
 				if (senhaParam.equals(confirmaSenhaParam)) {
 					try {
 						try {
-							this.salvarUsuario(userForm, request,
-									response, params);
+							this.salvarUsuario(userForm, request, response, params);
 						} catch (UsuarioExistenteException e) {
 							this.retornaErroForm("usuarios?acao=listar", e.getMessage(), params, request, response);
 							return;
@@ -333,6 +286,41 @@ public class UsuarioServlet extends HttpServlet {
 
 	}
 
+	/**
+	 * Converte um objeto Part para File2Upload
+	 * @param part
+	 * @return
+	 * @throws IOException
+	 */
+	private File2Upload Part2FileObj(Part part) throws IOException {
+		File2Upload file = null;
+		byte[] fileB64 = inputSream2Byte(part.getInputStream());
+		if (fileB64.length > 0) {
+			file = new File2Upload();
+			file.setFileB64(Base64.getEncoder().encodeToString(fileB64)); // Base64 array to String
+			file.setFileName(part.getSubmittedFileName());
+			file.setFileSize(part.getSize());
+			file.setFileType(part.getContentType());
+		}
+		return file;
+	}
+	
+	/**
+	 * Converte a entrada de fluxo de dados da imagem para um array de byte
+	 * @param is
+	 * @return
+	 * @throws IOException
+	 */
+	private byte[] inputSream2Byte(InputStream is) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int reads = is.read();
+		while (reads != -1) {
+			baos.write(reads);
+			reads = is.read();
+		}
+		return baos.toByteArray();
+	}
+
 	private boolean isFormValido(Usuario userForm) {
 		if (userForm == null)
 			return false;
@@ -356,16 +344,10 @@ public class UsuarioServlet extends HttpServlet {
 			return false;
 		if ((userForm.getConfirmaSenha() == null) || (userForm.getConfirmaSenha().isEmpty()))
 			return false;
-		
+
 		return true;
 	}
-
-	private boolean isFormValido(String nomeParam, String loginParam, String senhaParam, String confirmaSenhaParam) {
-		return (nomeParam != null && !nomeParam.isEmpty()) && (loginParam != null && !loginParam.isEmpty())
-				&& (senhaParam != null && !senhaParam.isEmpty())
-				&& (confirmaSenhaParam != null && !confirmaSenhaParam.isEmpty());
-	}
-
+	
 	private boolean isFormValido(String nomeParam) {
 		return (nomeParam != null && !nomeParam.isEmpty());
 	}

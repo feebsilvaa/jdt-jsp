@@ -77,7 +77,7 @@ public class File2Upload {
 	@Override
 	public String toString() {
 		return "File2Upload [id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + ", fileSize=" + fileSize
-				+ ", fileB64=" + fileB64 + ", idUsuario=" + idUsuario + "]";
+				+ ", fileB64=" + fileB64.substring(0, 10) + "..., idUsuario=" + idUsuario + "]";
 	}
 
 }
