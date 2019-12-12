@@ -1,12 +1,16 @@
 package br.com.feedev.jdtjsp.controller.servlet;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -20,6 +24,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.postgresql.util.PSQLException;
 
 import br.com.feedev.jdtjsp.config.util.ApplicationConstants;
+import br.com.feedev.jdtjsp.controller.service.FilesService;
 import br.com.feedev.jdtjsp.controller.service.UsuarioService;
 import br.com.feedev.jdtjsp.exception.UsuarioExistenteException;
 import br.com.feedev.jdtjsp.model.bean.File2Upload;
@@ -35,9 +40,12 @@ public class UsuarioServlet extends HttpServlet {
 	private static final long serialVersionUID = 3020240496211414881L;
 
 	private static UsuarioService usuarioService;
+	
+	private static FilesService filesService;
 
 	public UsuarioServlet() {
 		usuarioService = new UsuarioService();
+		filesService = new FilesService();
 	}
 
 	@Override
@@ -101,6 +109,42 @@ public class UsuarioServlet extends HttpServlet {
 				this.retornaErroForm("usuarios.jsp", "Ocorreu um erro genérico.", null, request, response);
 				return;
 			}
+			break;
+		case "downloadFile":
+			String idFileParam = request.getParameter("idFile");
+			
+			try {
+				File2Upload file2Download = filesService.buscarFilePorId(idFileParam);
+				if (file2Download != null) {
+					// Seta o header que fará a ação de download de um attachment no response
+					String randomName = UUID.randomUUID().toString().replace("-", "");
+					String fileType = file2Download.getFileType().split("/")[1];
+					String headerKey = "Content-Disposition";
+					String headerValue = String.format("attachment;filename=%s.%s", randomName, fileType);
+					response.setHeader(headerKey, headerValue);
+					// Converte a base64 da imagem do banco para byte[]
+					byte[] imageB64 = Base64.getDecoder().decode(file2Download.getFileB64());
+					// Coloca os bytes em um objeto de entrada para processar
+					InputStream imageIS = new ByteArrayInputStream(imageB64);
+					
+					int read = 0;
+					byte[] bytes = new byte[1024];
+					OutputStream os = response.getOutputStream();
+					
+					while((read = imageIS.read(bytes)) != -1) {
+						os.write(bytes, 0, read);
+					}
+					
+					os.flush();
+					os.close();
+					
+				}
+				
+			} catch (NumberFormatException | SQLException e) {
+				this.retornaErroForm("usuarios.jsp", "Ocorreu um ao tentar realizar o download do arquivo.", null, request, response);
+				return;
+			}
+			
 			break;
 		default:
 			try {

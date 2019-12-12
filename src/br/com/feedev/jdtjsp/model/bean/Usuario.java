@@ -31,8 +31,12 @@ public class Usuario {
 	private String confirmaSenha;
 
 	private File2Upload fotoFile;
+	
+	private String tempFoto;
 
 	private File2Upload pdfFile;
+	
+	private String tempPdf;
 
 	public Usuario() {
 	}
@@ -227,6 +231,20 @@ public class Usuario {
 		this.pdfFile = pdfFile;
 	}
 
+	public String getTempFoto() {
+		if (fotoFile != null) {
+			tempFoto = "data:" + fotoFile.getFileType() + ";base64," + fotoFile.getFileB64();			
+		}
+		return tempFoto;
+	}
+
+	public String getTempPdf() {
+		if (pdfFile != null) {
+			tempPdf = "data:" + pdfFile.getFileType() + ";base64," + pdfFile.getFileB64();			
+		}
+		return tempPdf;
+	}
+
 	public String getEndereco() {
 		if (cep != null) {
 			if (!complemento.isEmpty()) {
@@ -255,11 +273,42 @@ public class Usuario {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (login == null) {
+			if (other.login != null)
+				return false;
+		} else if (!login.equals(other.login))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco + ", cep="
 				+ cep + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento=" + complemento
 				+ ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", login=" + login + ", senha="
-				+ senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", pdfFile=" + pdfFile + "]";
+				+ senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", pdfFile=" + pdfFile + "]\n";
 	}
 
 }

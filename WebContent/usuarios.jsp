@@ -269,17 +269,16 @@
 								<div class="col-md-4">
 									<div class="custom-file">
 										<input type="file" name="foto" id="foto"
-											class="custom-file-input" accept="image/*"> 
-											<label class="custom-file-label"
-											for="foto">Escolha uma foto...</label>
+											class="custom-file-input" accept="image/*"> <label
+											class="custom-file-label" for="foto">Escolha uma
+											foto...</label>
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="custom-file">
 										<input type="file" name="pdf" id="pdf"
-											class="custom-file-input" accept="application/pdf"> 
-											<label class="custom-file-label"
-											for="pdf">Escolha um PDF...</label>
+											class="custom-file-input" accept="application/pdf"> <label
+											class="custom-file-label" for="pdf">Escolha um PDF...</label>
 									</div>
 								</div>
 							</div>
@@ -307,21 +306,25 @@
 							<table class="table table-bordered" id="dataTable">
 								<thead>
 									<tr>
+										<th>Id</th>
 										<th>Nome</th>
 										<th>Telefone</th>
 										<th>Endereço</th>
 										<th>Username</th>
 										<th>Senha</th>
+										<th>Imagem</th>
 										<th>Ações</th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
+										<th>Id</th>
 										<th>Nome</th>
 										<th>Telefone</th>
 										<th>Endereço</th>
 										<th>Username</th>
 										<th>Senha</th>
+										<th>Imagem</th>
 										<th>Ações</th>
 									</tr>
 								</tfoot>
@@ -329,11 +332,23 @@
 									<c:catch var="err">
 										<c:forEach items="${ usuarios }" var="usuario">
 											<tr>
+												<td><span>${ usuario.id }</span></td>
 												<td><span>${ usuario.nome }</span></td>
 												<td><span>${ usuario.telefone }</span></td>
 												<td><span>${ usuario.endereco }</span></td>
 												<td><span>${ usuario.login }</span></td>
 												<td><span>${ usuario.senha }</span></td>
+												<td><c:if test="${ !empty usuario.tempFoto}">
+														<span> <a
+															href="usuarios?acao=downloadFile&idFile=${ usuario.fotoFile.id }">
+																<img src="${ usuario.tempFoto }"
+																class="img-thumbnail-minor" alt="${ usuario.login }"
+																title="${ usuario.login }">
+														</a>
+														</span>
+													</c:if> <c:if test="${ empty usuario.tempFoto}">
+														<span>Sem imagem</span>
+													</c:if></td>
 												<td><label for="icoEditar" data-toggle="tooltip"
 													data-placement="top" title="Editar"> <a
 														id="icoEditar" class="btn btn-outline-dark"
@@ -347,7 +362,16 @@
 														data-target="#confirmaExclusaoModal"> <i
 															class="fas fa-trash"></i>
 													</a>
-												</label></td>
+												</label>
+												<c:if test="${ !empty usuario.tempPdf}">
+														<label for="icoPDF" data-toggle="tooltip"
+															data-placement="top" title="Download PDF"> <a
+															id="icoPDF" class="btn btn-outline-dark"
+															href="usuarios?acao=downloadFile&idFile=${ usuario.pdfFile.id }">
+																<i class="fas fa-file-pdf"></i>
+														</a>
+														</label>
+													</c:if></td>
 											</tr>
 										</c:forEach>
 									</c:catch>

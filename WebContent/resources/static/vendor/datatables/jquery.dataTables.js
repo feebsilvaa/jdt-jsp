@@ -9984,7 +9984,7 @@
 		 *      } );
 		 *    } );
 		 */
-		"aaSorting": [[0,'asc']],
+		"aaSorting": [[0,'desc']], // Altera a coluna e a ordenação padrão da tabela
 	
 	
 		/**

@@ -35,7 +35,7 @@ public class UsuarioFileUploadsDao {
 
 	}
 
-	public File2Upload buscarProdutoPorId(Long id) throws SQLException {
+	public File2Upload buscarFilePorId(Long id) throws SQLException {
 		String sql = "select * from usuario_files_uploads where id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
