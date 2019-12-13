@@ -48,46 +48,89 @@
 					<li class="breadcrumb-item active"><span>${ usuario.nome }</span></li>
 				</ol>
 
-				<!-- DataTables Example -->
 				<div class="card card-register mx-auto mt-5">
-					<div class="card-header">Editar <span>${ usuario.nome }</span></div>
-					<div class="card-body">
-						<form action="usuarios?acao=editar" method="post">
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="login" id="inputLogin" value="${ usuario.login }"
-										class="form-control" placeholder="Usuário" disabled>
-									<label for="inputLogin">Usuário</label>
-								</div>
+					<div class="card-header">
+						Editar <span>${ usuario.nome }</span>
+					</div>
+					<div class="row no-gutters">
+						<div class="col-md-4 align-self-center">
+							<div class="row">
+								<c:if test="${ !empty usuario.tempFoto}">
+									<span> <img src="${ usuario.tempFoto }"
+										class="text-center card-img img-thumbnail"
+										alt="${ usuario.login }" title="${ usuario.login }">
+									</span>
+								</c:if>
+								<c:if test="${ empty usuario.tempFoto}">
+									<div class="offset-sm-2 offset-md-4">
+										<i class="fas fa-10x fa-user img-thumbnail"></i>
+									</div>
+								</c:if>
 							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="nome" id="inputNome" value="${ usuario.nome }"
-										class="form-control" placeholder="Nome" required="required">
-									<label for="inputNome">Nome</label>
-								</div>
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<form action="usuarios?acao=editar" method="post" enctype="multipart/form-data">
+									<div class="form-group">
+										<div class="form-label-group">
+											<input type="text" name="login" id="inputLogin"
+												value="${ usuario.login }" class="form-control"
+												placeholder="Usuário" disabled> <label
+												for="inputLogin">Usuário</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="form-label-group">
+											<input type="text" name="nome" id="inputNome"
+												value="${ usuario.nome }" class="form-control"
+												placeholder="Nome" required="required"> <label
+												for="inputNome">Nome</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="form-label-group">
+											<input type="text" name="telefone" id="inputTelefone"
+												value="${ usuario.telefone }" class="form-control"
+												placeholder="Nome"> <label for="inputTelefone">Telefone</label>
+										</div>
+									</div>
+
+									<div class="form-row">
+										<div class="col-md-4">
+											<div class="custom-file">
+												<input type="file" name="foto" id="foto"
+													class="custom-file-input" accept="image/*" 
+													value=""> <label
+													class="custom-file-label" for="foto">Escolha uma
+													foto...</label>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="custom-file">
+												<input type="file" name="pdf" id="pdf"
+													class="custom-file-input" accept="application/pdf"
+													value="${ usuario.pdfFile.fileB64 }">
+												<label class="custom-file-label" for="pdf">Escolha
+													um PDF...</label>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="form-label-group">
+											<input type="hidden" name="id" value="${ usuario.id }"
+												class="form-control">
+										</div>
+									</div>
+									<button class="btn btn-primary btn-block">Editar</button>
+									<br>
+									<c:if test="${ errorMessage != null }">
+										<div class="alert alert-danger" role="alert">
+											<span>${ errorMessage }</span>
+										</div>
+									</c:if>
+								</form>
 							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" name="telefone" id="inputTelefone" value="${ usuario.telefone }"
-										class="form-control" placeholder="Nome">
-									<label for="inputTelefone">Telefone</label>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="hidden" name="id" value="${ usuario.id }"
-										class="form-control">
-								</div>
-							</div>
-							<button class="btn btn-primary btn-block">Editar</button>
-							<br>
-							<c:if test="${ errorMessage != null }">
-								<div class="alert alert-danger" role="alert">
-									<span>${ errorMessage }</span>
-								</div>
-							</c:if>
-						</form>
+						</div>
 					</div>
 				</div>
 
@@ -131,6 +174,11 @@
 	<script src="resources/static/js/demo/datatables-demo.js"></script>
 	<script src="resources/static/js/demo/chart-area-demo.js"></script>
 
+	<script type="text/javascript">
+		$(document).ready(function() {
+			bsCustomFileInput.init()
+		});
+	</script>
 </body>
 
 </html>

@@ -75,17 +75,29 @@ public class UsuarioDao {
 	}
 
 	public Usuario buscarUsuarioPorId(Long id) throws SQLException {
-		String sql = "select * from usuario where id = ?";
+		String sql = "select usu.*, ufu.id as file_id, ufu.* "
+				+ "from usuario usu " 
+				+ "left join usuario_files_uploads ufu " 
+				+ "on usu.id = ufu.usuario_id "
+				+ "where usu.id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		stmt.setLong(1, id);
 
 		ResultSet rs = stmt.executeQuery();
-
-		if (rs.next()) {
-			return this.resultSetToUsuario(rs);
+		Usuario usuario = null;
+		while (rs.next()) {
+			Usuario u = this.resultSetToUsuario(rs);
+			File2Upload file = this.resultSet2File(rs);
+			if (u.equals(usuario)) {
+				adicionaFile(file, usuario);
+			} else {
+				usuario = u;
+				adicionaFile(file, usuario);
+			}
 		}
-		return null;
+		System.out.println(usuario);
+		return usuario;
 	}
 
 	public List<Usuario> listar() throws SQLException {

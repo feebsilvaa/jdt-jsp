@@ -491,7 +491,7 @@ mark,
 }
 
 .img-thumbnail {
-  padding: 0.25rem;
+  padding: 0.9rem;
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
@@ -499,12 +499,30 @@ mark,
   height: auto;
 }
 
-.img-thumbnail-minor {
+.img-thumbnail-covered {
+  padding: 0.9rem;
+  background-color: #bababa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.img-thumbnail-sm {
   padding: 0.25rem;
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
   max-width: 100px;
+  height: auto;
+}
+
+.img-thumbnail-md {
+  padding: 0.25rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  max-width: 300px;
   height: auto;
 }
 
@@ -4978,6 +4996,12 @@ input[type="button"].btn-block {
 }
 
 .card-img {
+  width: 100%;
+  border-radius: calc(0.25rem - 1px);
+}
+
+.card-img-feedev {
+	margin: 20px;
   width: 100%;
   border-radius: calc(0.25rem - 1px);
 }

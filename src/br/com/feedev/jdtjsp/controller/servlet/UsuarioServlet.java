@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -290,22 +289,42 @@ public class UsuarioServlet extends HttpServlet {
 			}
 
 		case "editar":
-
+			
 			idParam = request.getParameter("id");
 			nomeParam = request.getParameter("nome");
 			telefoneParam = request.getParameter("telefone");
+			
+			try {
+				// FILE UPLOAD de imagem e pdf
+				if (ServletFileUpload.isMultipartContent(request)) {
+					Part fotoPart = request.getPart("foto");
+					fotoFile = Part2FileObj(fotoPart);
+					
+					Part pdfPart = request.getPart("pdf");
+					pdfFile = Part2FileObj(pdfPart);			
+				}	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			params.put("idParam", idParam);
 			params.put("nomeParam", nomeParam);
 			params.put("telefoneParam", telefoneParam);
+			if (fotoFile != null) {
+				params.put("fotoParam", fotoFile.getFileB64());
+			}
+			if (pdfFile != null) {
+				params.put("pdfParam", pdfFile.getFileB64());
+			}
+			
+			Usuario userFormEdit = new Usuario(Long.valueOf(idParam), nomeParam, telefoneParam, cepParam, logradouroParam, numeroParam,
+					complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam, confirmaSenhaParam,
+					fotoFile, pdfFile);
 
 			if (isFormValido(nomeParam)) {
 
 				try {
-					Usuario usuarioEditado = new Usuario();
-					usuarioEditado.setNome(nomeParam);
-					usuarioEditado.setTelefone(telefoneParam);
-					this.editarUsuario(Long.valueOf(idParam), usuarioEditado, request, response);
+					this.editarUsuario(userFormEdit.getId(), userFormEdit, request, response);
 					return;
 				} catch (SQLException e) {
 					e.printStackTrace();

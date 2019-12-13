@@ -342,7 +342,7 @@
 														<span> <a
 															href="usuarios?acao=downloadFile&idFile=${ usuario.fotoFile.id }">
 																<img src="${ usuario.tempFoto }"
-																class="img-thumbnail-minor" alt="${ usuario.login }"
+																class="img-thumbnail-sm" alt="${ usuario.login }"
 																title="${ usuario.login }">
 														</a>
 														</span>
