@@ -61,7 +61,7 @@ public class UsuarioDao {
 	}
 
 	public Usuario buscarUsuarioPorLogin(String login) throws SQLException {
-		String sql = "select * from usuario where login = ? where usu.login <> 'admin'";
+		String sql = "select * from usuario where login = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		stmt.setString(1, login);
@@ -80,7 +80,7 @@ public class UsuarioDao {
 				+ "left join usuario_files_uploads ufu " 
 				+ "on usu.id = ufu.usuario_id "
 				+ "where usu.login <> 'admin' "
-				+ "where usu.id = ?";
+				+ "and usu.id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		stmt.setLong(1, id);
@@ -147,14 +147,14 @@ public class UsuarioDao {
 	}
 
 	public void excluir(Long id) throws SQLException {
-		String sql = "delete from usuario where id = ? and usu.login <> 'admin'";
+		String sql = "delete from usuario where id = ? and login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setLong(1, id);
 		stmt.execute();
 	}
 
 	public void editarUsuario(Long id, Usuario usuario) throws SQLException {
-		String sql = "update usuario set nome = ?, telefone = ? where id = ? where and usu.login <> 'admin'";
+		String sql = "update usuario set nome = ?, telefone = ? where id = ? and login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, usuario.getNome());
 		try {

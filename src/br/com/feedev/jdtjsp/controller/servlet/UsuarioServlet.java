@@ -102,16 +102,16 @@ public class UsuarioServlet extends HttpServlet {
 				Usuario usuario = usuarioService.buscarUsuarioPorId(Long.valueOf(idParam));
 				request.setAttribute("usuario", usuario);
 				this.dispathTo("edita-usuario.jsp", request, response);
+				return;
 			} catch (SQLException e) {
 				e.printStackTrace();
-				this.retornaErroForm("usuarios", e.getMessage(), null, request, response);
+				this.retornaErroForm("usuarios.jsp", e.getMessage(), null, request, response);
 				return;
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 				this.retornaErroForm("usuarios.jsp", "Ocorreu um erro genérico.", null, request, response);
 				return;
 			}
-			break;
 		case "downloadFile":
 			String idFileParam = request.getParameter("idFile");
 			
