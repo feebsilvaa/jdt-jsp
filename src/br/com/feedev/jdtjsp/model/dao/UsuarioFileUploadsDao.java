@@ -21,15 +21,16 @@ public class UsuarioFileUploadsDao {
 	public void salvarFile(File2Upload file, Long idUsuario) throws SQLException {
 		String sql = ""
 				+ "insert into usuario_files_uploads "
-				+ "(file_size, file_name, file_base_64, file_type, usuario_id) "
-				+ "values (?, ?, ?, ?, ?)";
+				+ "(file_size, file_name, file_base_64, file_type, file_mini_b64, usuario_id) "
+				+ "values (?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		stmt.setLong(1, file.getFileSize());
 		stmt.setString(2, file.getFileName());
 		stmt.setString(3, file.getFileB64());
 		stmt.setString(4, file.getFileType());
-		stmt.setLong(5, idUsuario);
+		stmt.setString(5, file.getMiniaturaB64());
+		stmt.setLong(6, idUsuario);
 
 		stmt.execute();
 
@@ -92,7 +93,7 @@ public class UsuarioFileUploadsDao {
 		String sql = ""
 				+ "update usuario_files_uploads set "
 				+ "file_size = ?, file_name = ?,"
-				+ "file_base_64 = ?, file_type = ?  "
+				+ "file_base_64 = ?, file_type = ?, file_mini_b64 = ?  "
 				+ "where id = ? "
 				+ "and usuario_id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -100,15 +101,16 @@ public class UsuarioFileUploadsDao {
 		stmt.setString(2, fileNovo.getFileName());
 		stmt.setString(3, fileNovo.getFileB64());
 		stmt.setString(4, fileNovo.getFileType());
-		stmt.setLong(5, fileAntigo.getId());
-		stmt.setLong(6, fileAntigo.getIdUsuario());
+		stmt.setString(5, fileNovo.getMiniaturaB64());
+		stmt.setLong(6, fileAntigo.getId());
+		stmt.setLong(7, fileAntigo.getIdUsuario());
 		
 		stmt.executeUpdate();
 		
 	}
 	
 	private File2Upload resultSetToFileUploaded(ResultSet rs) throws SQLException {
-		return new File2Upload(rs.getLong("id"), rs.getString("file_name"), rs.getString("file_type"), rs.getLong("file_size"), rs.getString("file_base_64"), rs.getLong("usuario_id"));
+		return new File2Upload(rs.getLong("id"), rs.getString("file_name"), rs.getString("file_type"), rs.getLong("file_size"), rs.getString("file_base_64"), rs.getString("file_mini_b64"), rs.getLong("usuario_id"));
 	}
 
 

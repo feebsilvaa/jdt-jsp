@@ -33,6 +33,8 @@ public class Usuario {
 	private File2Upload fotoFile;
 	
 	private String tempFoto;
+	
+	private String tempMiniFoto;
 
 	private File2Upload pdfFile;
 	
@@ -244,6 +246,13 @@ public class Usuario {
 		}
 		return tempPdf;
 	}
+	
+	public String getTempMiniFoto() {
+		if (fotoFile != null) {
+			tempMiniFoto = "data:image/png;base64," + fotoFile.getMiniaturaB64();			
+		}
+		return tempMiniFoto;
+	}
 
 	public String getEndereco() {
 		if (cep != null) {
@@ -308,7 +317,8 @@ public class Usuario {
 		return "Usuario [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco + ", cep="
 				+ cep + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento=" + complemento
 				+ ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", login=" + login + ", senha="
-				+ senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", pdfFile=" + pdfFile + "]\n";
+				+ senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", tempFoto=" + tempFoto
+				+ ", tempMiniFoto=" + tempMiniFoto + ", pdfFile=" + pdfFile + ", tempPdf=" + tempPdf + "]";
 	}
 
 }

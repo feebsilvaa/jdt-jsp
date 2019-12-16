@@ -61,7 +61,7 @@ public class UsuarioDao {
 	}
 
 	public Usuario buscarUsuarioPorLogin(String login) throws SQLException {
-		String sql = "select * from usuario where login = ?";
+		String sql = "select * from usuario where login = ? where usu.login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		stmt.setString(1, login);
@@ -79,6 +79,7 @@ public class UsuarioDao {
 				+ "from usuario usu " 
 				+ "left join usuario_files_uploads ufu " 
 				+ "on usu.id = ufu.usuario_id "
+				+ "where usu.login <> 'admin' "
 				+ "where usu.id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
@@ -88,7 +89,7 @@ public class UsuarioDao {
 		Usuario usuario = null;
 		while (rs.next()) {
 			Usuario u = this.resultSetToUsuario(rs);
-			File2Upload file = this.resultSet2File(rs);
+			File2Upload file = this.resultSet2FileComplete(rs);
 			if (u.equals(usuario)) {
 				adicionaFile(file, usuario);
 			} else {
@@ -107,6 +108,7 @@ public class UsuarioDao {
 				+ "from usuario usu "
 				+ "left join usuario_files_uploads ufu "
 				+ "on usu.id = ufu.usuario_id "
+				+ "where usu.login <> 'admin' "
 				+ "order by usu.id desc ";
 
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -115,7 +117,13 @@ public class UsuarioDao {
 
 		while (resultSet.next()) {
 			Usuario u = this.resultSetToUsuario(resultSet);
-			File2Upload file = this.resultSet2File(resultSet);
+			File2Upload file;
+			String file_type = resultSet.getString("file_type");
+			if (file_type != null && file_type.contains("image")) {
+				file = this.resultSet2FileMini(resultSet);	
+			} else {
+				file = this.resultSet2FileComplete(resultSet);				
+			}
 			if (usuarios.contains(u)) { // Usuário ja está na lista
 				Usuario usuExistente = usuarios.get(usuarios.indexOf(u));
 				adicionaFile(file, usuExistente);
@@ -128,7 +136,7 @@ public class UsuarioDao {
 	}
 
 	private void adicionaFile(File2Upload file, Usuario usu) {
-		if (file.getFileB64() != null) {
+		if (file.getFileType() != null) {
 			if (file.getFileType().contains("image")) {
 				usu.setFotoFile(file);
 			}
@@ -139,14 +147,14 @@ public class UsuarioDao {
 	}
 
 	public void excluir(Long id) throws SQLException {
-		String sql = "delete from usuario where id = ? ";
+		String sql = "delete from usuario where id = ? and usu.login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setLong(1, id);
 		stmt.execute();
 	}
 
 	public void editarUsuario(Long id, Usuario usuario) throws SQLException {
-		String sql = "update usuario set nome = ?, telefone = ? where id = ? ";
+		String sql = "update usuario set nome = ?, telefone = ? where id = ? where and usu.login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, usuario.getNome());
 		try {
@@ -164,9 +172,14 @@ public class UsuarioDao {
 				rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"));
 	}
 	
-	private File2Upload resultSet2File(ResultSet rs) throws SQLException {
+	private File2Upload resultSet2FileComplete(ResultSet rs) throws SQLException {
 		return new File2Upload(rs.getLong("file_id"), rs.getString("file_name"), rs.getString("file_type"),
-				rs.getLong("file_size"), rs.getString("file_base_64"), rs.getLong("usuario_id"));
+				rs.getLong("file_size"), rs.getString("file_base_64"), rs.getString("file_mini_b64"), rs.getLong("usuario_id"));
 	}
-
+	
+	private File2Upload resultSet2FileMini(ResultSet rs) throws SQLException {
+		return new File2Upload(rs.getLong("file_id"), rs.getString("file_name"), rs.getString("file_type"),
+				rs.getLong("file_size"), rs.getString("file_mini_b64"), rs.getLong("usuario_id"));
+	}
+	
 }

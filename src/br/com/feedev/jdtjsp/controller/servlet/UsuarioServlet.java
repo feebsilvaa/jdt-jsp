@@ -1,5 +1,7 @@
 package br.com.feedev.jdtjsp.controller.servlet;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -214,10 +217,9 @@ public class UsuarioServlet extends HttpServlet {
 				// FILE UPLOAD de imagem e pdf
 				if (ServletFileUpload.isMultipartContent(request)) {
 					Part fotoPart = request.getPart("foto");
-					fotoFile = Part2FileObj(fotoPart);
-					
+					fotoFile = part2FileObj(fotoPart);
 					Part pdfPart = request.getPart("pdf");
-					pdfFile = Part2FileObj(pdfPart);			
+					pdfFile = part2FileObj(pdfPart);			
 				}	
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -298,10 +300,10 @@ public class UsuarioServlet extends HttpServlet {
 				// FILE UPLOAD de imagem e pdf
 				if (ServletFileUpload.isMultipartContent(request)) {
 					Part fotoPart = request.getPart("foto");
-					fotoFile = Part2FileObj(fotoPart);
+					fotoFile = part2FileObj(fotoPart);
 					
 					Part pdfPart = request.getPart("pdf");
-					pdfFile = Part2FileObj(pdfPart);			
+					pdfFile = part2FileObj(pdfPart);			
 				}	
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -355,18 +357,40 @@ public class UsuarioServlet extends HttpServlet {
 	 * @return
 	 * @throws IOException
 	 */
-	private File2Upload Part2FileObj(Part part) throws IOException {
+	private File2Upload part2FileObj(Part part) throws IOException {
 		File2Upload file = null;
-		byte[] fileB64 = inputSream2Byte(part.getInputStream());
-		if (fileB64.length > 0) {
+		byte[] fileBytes = inputSream2Byte(part.getInputStream());
+		if (fileBytes.length > 0) {
 			file = new File2Upload();
-			file.setFileB64(Base64.getEncoder().encodeToString(fileB64)); // Base64 array to String
+			file.setFileB64(Base64.getEncoder().encodeToString(fileBytes)); // Base64 array to String
 			file.setFileName(part.getSubmittedFileName());
 			file.setFileSize(part.getSize());
 			file.setFileType(part.getContentType());
+			
+			if (file.getFileType().contains("image")) {
+				// transforma byte em bufferdImage
+				BufferedImage fotoBuff = ImageIO.read(new ByteArrayInputStream(fileBytes));
+				// tipo da imagem
+				int type = fotoBuff.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : fotoBuff.getType();
+				// cria imagem em miniatura 50 x 50	
+				int altura = 50;
+				int largura = 50;
+				BufferedImage resizedFotoBuff = new BufferedImage(largura, altura, type);
+				Graphics2D g = resizedFotoBuff.createGraphics();
+				g.drawImage(fotoBuff, 0, 0, largura, altura, null);
+				g.dispose();
+				
+				//Escrever imagem novamente
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ImageIO.write(resizedFotoBuff, "png", baos);
+				
+//				String miniaturaB64 = DatatypeConverter.printBase64Binary(baos.toByteArray());
+				String miniaturaB64II = Base64.getEncoder().encodeToString(baos.toByteArray());
+				file.setMiniaturaB64(miniaturaB64II);
+			}
 		}
 		return file;
-	}
+	} 
 	
 	/**
 	 * Converte a entrada de fluxo de dados da imagem para um array de byte

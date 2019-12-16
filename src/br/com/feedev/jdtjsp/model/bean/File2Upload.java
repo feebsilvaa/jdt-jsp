@@ -14,15 +14,27 @@ public class File2Upload {
 
 	Long idUsuario;
 
+	String miniaturaB64;
+
 	public File2Upload() {
 	}
 
-	public File2Upload(Long id, String fileName, String fileType, Long fileSize, String fileB64, Long idUsuario) {
+	public File2Upload(Long id, String fileName, String fileType, Long fileSize, String fileB64, String miniaturaB64, Long idUsuario) {
 		this.id = id;
 		this.fileName = fileName;
 		this.fileType = fileType;
 		this.fileSize = fileSize;
 		this.fileB64 = fileB64;
+		this.miniaturaB64 = miniaturaB64;
+		this.idUsuario = idUsuario;
+	}
+
+	public File2Upload(Long id, String fileName, String fileType, Long fileSize, String miniaturaB64, Long idUsuario) {
+		this.id = id;
+		this.fileName = fileName;
+		this.fileType = fileType;
+		this.fileSize = fileSize;
+		this.miniaturaB64 = miniaturaB64;
 		this.idUsuario = idUsuario;
 	}
 
@@ -74,10 +86,18 @@ public class File2Upload {
 		this.idUsuario = idUsuario;
 	}
 
+	public String getMiniaturaB64() {
+		return miniaturaB64;
+	}
+
+	public void setMiniaturaB64(String miniaturaB64) {
+		this.miniaturaB64 = miniaturaB64;
+	}
+
 	@Override
 	public String toString() {
 		return "File2Upload [id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + ", fileSize=" + fileSize
-				+ ", fileB64=" + fileB64.substring(0, 10) + "..., idUsuario=" + idUsuario + "]";
+				+ ", idUsuario=" + idUsuario + ", miniaturaB64=" + miniaturaB64 + "...]";
 	}
 
 }

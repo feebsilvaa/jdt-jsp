@@ -338,16 +338,16 @@
 												<td><span>${ usuario.endereco }</span></td>
 												<td><span>${ usuario.login }</span></td>
 												<td><span>${ usuario.senha }</span></td>
-												<td><c:if test="${ !empty usuario.tempFoto}">
+												<td><c:if test="${ !empty usuario.tempMiniFoto }">
 														<span> <a
 															href="usuarios?acao=downloadFile&idFile=${ usuario.fotoFile.id }">
-																<img src="${ usuario.tempFoto }"
+																<img src="${ usuario.tempMiniFoto }"
 																class="img-thumbnail-sm" alt="${ usuario.login }"
 																title="${ usuario.login }">
 														</a>
 														</span>
-													</c:if> <c:if test="${ empty usuario.tempFoto}">
-														<span>Sem imagem</span>
+													</c:if> <c:if test="${ empty usuario.tempMiniFoto }">
+														<span> <i class="fas fa-user"></i></span>
 													</c:if></td>
 												<td><label for="icoEditar" data-toggle="tooltip"
 													data-placement="top" title="Editar"> <a
