@@ -38,8 +38,8 @@ public class UsuarioDao {
 		String sql = "" 
 				+ "insert into usuario "
 				+ "(nome, telefone, cep, logradouro, numero, "
-				+ "complemento, bairro, cidade, estado, login, senha) " 
-				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "complemento, bairro, cidade, estado, login, senha, ativo) " 
+				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		System.out.println("Salvando usuario: " + usuario);
@@ -55,6 +55,7 @@ public class UsuarioDao {
 		stmt.setString(9, usuario.getEstado());
 		stmt.setString(10, usuario.getLogin());
 		stmt.setString(11, usuario.getSenha());
+		stmt.setInt(12, usuario.getAtivo() ? 1 : 0);
 
 		stmt.execute();
 
@@ -154,7 +155,7 @@ public class UsuarioDao {
 	}
 
 	public void editarUsuario(Long id, Usuario usuario) throws SQLException {
-		String sql = "update usuario set nome = ?, telefone = ? where id = ? and login <> 'admin'";
+		String sql = "update usuario set nome = ?, telefone = ?, ativo = ? where id = ? and login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, usuario.getNome());
 		try {
@@ -162,14 +163,15 @@ public class UsuarioDao {
 		} catch (NullPointerException e) {
 			stmt.setString(2, null);
 		}
-		stmt.setLong(3, id);
+		stmt.setInt(3, usuario.getAtivo() ? 1 : 0);
+		stmt.setLong(4, id);
 		stmt.executeUpdate();
 	}
 
 	private Usuario resultSetToUsuario(ResultSet rs) throws SQLException {
 		return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), rs.getString("cep"),
 				rs.getString("logradouro"), rs.getString("numero"), rs.getString("complemento"), rs.getString("bairro"),
-				rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"));
+				rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"));
 	}
 	
 	private File2Upload resultSet2FileComplete(ResultSet rs) throws SQLException {

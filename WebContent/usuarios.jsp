@@ -281,6 +281,16 @@
 											class="custom-file-label" for="pdf">Escolha um PDF...</label>
 									</div>
 								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<div class="form-check">
+											<input class="form-check-input" 
+												id="usuarioAtivo" name="usuarioAtivo"
+												type="checkbox" value="${ ativoForm }"> <label class="form-check-label"
+												for="usuarioAtivo"> Ativo </label>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="form-row">
 								<div class="offset-md-10 col-md-2">
@@ -311,7 +321,7 @@
 										<th>Telefone</th>
 										<th>Endereço</th>
 										<th>Username</th>
-										<th>Senha</th>
+										<th>Ativo</th>
 										<th>Imagem</th>
 										<th>Ações</th>
 									</tr>
@@ -323,7 +333,7 @@
 										<th>Telefone</th>
 										<th>Endereço</th>
 										<th>Username</th>
-										<th>Senha</th>
+										<th>Ativo</th>
 										<th>Imagem</th>
 										<th>Ações</th>
 									</tr>
@@ -337,7 +347,7 @@
 												<td><span>${ usuario.telefone }</span></td>
 												<td><span>${ usuario.endereco }</span></td>
 												<td><span>${ usuario.login }</span></td>
-												<td><span>${ usuario.senha }</span></td>
+												<td><span>${ usuario.ativo }</span></td>
 												<td><c:if test="${ !empty usuario.tempMiniFoto }">
 														<span> <a
 															href="usuarios?acao=downloadFile&idFile=${ usuario.fotoFile.id }">

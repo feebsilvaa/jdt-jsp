@@ -36,6 +36,12 @@ public class ApplicationConstants {
 
 	public static final String ATTR_QUANTIDADE_FORM = "quantidadeForm";
 
+	public static final String ATTR_PICTURE_FILE_FORM = "picFileForm";
+
+	public static final String ATTR_PDF_FILE_FORM = "pdfFileForm";
+
+	public static final String ATTR_USUARIO_ATIVO_FORM = "ativoForm";
+
 	public final static String ERR_GENERICO_MSG = "Ocorreu um erro! Contacte o administrador do sistema.";
 
 	public final static String ERR_USER_SENHA_INCORRETO_MSG = "Usuário e/ou Senha incorretos.";

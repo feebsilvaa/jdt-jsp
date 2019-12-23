@@ -193,6 +193,7 @@ public class UsuarioServlet extends HttpServlet {
 		String confirmaSenhaParam = null;
 		File2Upload fotoFile = null;
 		File2Upload pdfFile = null;
+		boolean usuarioAtivoParam = false;
 
 		HashMap<String, String> params = new HashMap<String, String>();
 
@@ -212,6 +213,9 @@ public class UsuarioServlet extends HttpServlet {
 			loginParam = request.getParameter("login");
 			senhaParam = request.getParameter("senha");
 			confirmaSenhaParam = request.getParameter("confirmaSenha");
+			String usuarioAtivo = request.getParameter("usuarioAtivo");
+			System.out.println(usuarioAtivo);
+			usuarioAtivoParam = "on".equalsIgnoreCase(request.getParameter("usuarioAtivo")) ? true : false;
 			
 			try {
 				// FILE UPLOAD de imagem e pdf
@@ -238,6 +242,7 @@ public class UsuarioServlet extends HttpServlet {
 			params.put("loginParam", loginParam);
 			params.put("senhaParam", senhaParam);
 			params.put("confirmaSenhaParam", confirmaSenhaParam);
+			params.put("usuarioAtivoParam", usuarioAtivoParam ? "on" : null);
 			if (fotoFile != null) {
 				params.put("fotoParam", fotoFile.getFileB64());
 			}
@@ -247,7 +252,7 @@ public class UsuarioServlet extends HttpServlet {
 
 			Usuario userForm = new Usuario(null, nomeParam, telefoneParam, cepParam, logradouroParam, numeroParam,
 					complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam, confirmaSenhaParam,
-					fotoFile, pdfFile);
+					fotoFile, pdfFile, usuarioAtivoParam);
 
 			System.out.println(userForm);
 
@@ -295,6 +300,7 @@ public class UsuarioServlet extends HttpServlet {
 			idParam = request.getParameter("id");
 			nomeParam = request.getParameter("nome");
 			telefoneParam = request.getParameter("telefone");
+			usuarioAtivoParam = "on".equalsIgnoreCase(request.getParameter("ativo")) ? true : false;
 			
 			try {
 				// FILE UPLOAD de imagem e pdf
@@ -318,10 +324,11 @@ public class UsuarioServlet extends HttpServlet {
 			if (pdfFile != null) {
 				params.put("pdfParam", pdfFile.getFileB64());
 			}
+			params.put("usuarioAtivoParam", usuarioAtivoParam ? "on" : null);
 			
 			Usuario userFormEdit = new Usuario(Long.valueOf(idParam), nomeParam, telefoneParam, cepParam, logradouroParam, numeroParam,
 					complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam, confirmaSenhaParam,
-					fotoFile, pdfFile);
+					fotoFile, pdfFile, usuarioAtivoParam);
 
 			if (isFormValido(nomeParam)) {
 
@@ -481,6 +488,9 @@ public class UsuarioServlet extends HttpServlet {
 			request.setAttribute(ApplicationConstants.ATTR_USERNAME_FORM, params.get("loginParam"));
 			request.setAttribute(ApplicationConstants.ATTR_PASSWORD_FORM, params.get("senhaParam"));
 			request.setAttribute(ApplicationConstants.ATTR_PASSWORD_CONFIRM_FORM, params.get("confirmaSenhaParam"));
+			request.setAttribute(ApplicationConstants.ATTR_PICTURE_FILE_FORM, params.get("fotoParam"));
+			request.setAttribute(ApplicationConstants.ATTR_PDF_FILE_FORM, params.get("pdfParam"));
+			request.setAttribute(ApplicationConstants.ATTR_USUARIO_ATIVO_FORM, params.get("usuarioAtivoParam"));
 		}
 		this.dispathTo(view, request, response);
 	}

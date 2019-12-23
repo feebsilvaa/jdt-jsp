@@ -39,34 +39,39 @@ public class Usuario {
 	private File2Upload pdfFile;
 	
 	private String tempPdf;
+	
+	private Boolean ativo;
 
 	public Usuario() {
 	}
 
-	public Usuario(String nome, String telefone, String login, String senha) {
+	public Usuario(String nome, String telefone, String login, String senha, Boolean ativo) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.login = login;
 		this.senha = senha;
+		this.ativo = ativo;
 	}
 
-	public Usuario(Long id, String nome, String login, String senha) {
+	public Usuario(Long id, String nome, String login, String senha, Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
+		this.ativo = ativo;
 	}
 
-	public Usuario(Long id, String nome, String telefone, String login, String senha) {
+	public Usuario(Long id, String nome, String telefone, String login, String senha, Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
 		this.login = login;
 		this.senha = senha;
+		this.ativo = ativo;
 	}
 
 	public Usuario(String nome, String telefone, String cep, String logradouro, String numero, String complemento,
-			String bairro, String cidade, String estado, String login, String senha, String confirmaSenha) {
+			String bairro, String cidade, String estado, String login, String senha, String confirmaSenha, Boolean ativo) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.cep = cep;
@@ -79,10 +84,11 @@ public class Usuario {
 		this.login = login;
 		this.senha = senha;
 		this.confirmaSenha = confirmaSenha;
+		this.ativo = ativo;
 	}
 
 	public Usuario(Long id, String nome, String telefone, String cep, String logradouro, String numero,
-			String complemento, String bairro, String cidade, String estado, String login, String senha) {
+			String complemento, String bairro, String cidade, String estado, String login, String senha, Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
@@ -95,11 +101,12 @@ public class Usuario {
 		this.estado = estado;
 		this.login = login;
 		this.senha = senha;
+		this.ativo = ativo;
 	}
 	
 	public Usuario(Long id, String nome, String telefone, String cep, String logradouro, String numero,
 			String complemento, String bairro, String cidade, String estado, String login, String senha,
-			String confirmaSenha, File2Upload fotoFile, File2Upload pdfFile) {
+			String confirmaSenha, File2Upload fotoFile, File2Upload pdfFile, Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
@@ -115,6 +122,7 @@ public class Usuario {
 		this.confirmaSenha = confirmaSenha;
 		this.fotoFile = fotoFile;
 		this.pdfFile = pdfFile;
+		this.ativo = ativo;
 	}
 
 	public Long getId() {
@@ -273,6 +281,14 @@ public class Usuario {
 	public void setConfirmaSenha(String confirmaSenha) {
 		this.confirmaSenha = confirmaSenha;
 	}
+	
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
 
 	public boolean validarLoginSenha(String login, String senha) {
 		if (login.equals("admin") && senha.equals("admin")) {
@@ -318,7 +334,8 @@ public class Usuario {
 				+ cep + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento=" + complemento
 				+ ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", login=" + login + ", senha="
 				+ senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", tempFoto=" + tempFoto
-				+ ", tempMiniFoto=" + tempMiniFoto + ", pdfFile=" + pdfFile + ", tempPdf=" + tempPdf + "]";
+				+ ", tempMiniFoto=" + tempMiniFoto + ", pdfFile=" + pdfFile + ", tempPdf=" + tempPdf + ", ativo="
+				+ ativo + "]";
 	}
 
 }
