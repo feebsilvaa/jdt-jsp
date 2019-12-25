@@ -9,6 +9,7 @@ import java.util.List;
 
 import br.com.feedev.jdtjsp.config.conn.SingleConnection;
 import br.com.feedev.jdtjsp.model.bean.File2Upload;
+import br.com.feedev.jdtjsp.model.bean.SexoUsuario;
 import br.com.feedev.jdtjsp.model.bean.Usuario;
 
 public class UsuarioDao {
@@ -37,25 +38,26 @@ public class UsuarioDao {
 	public void salvarUsuario(Usuario usuario) throws SQLException {
 		String sql = "" 
 				+ "insert into usuario "
-				+ "(nome, telefone, cep, logradouro, numero, "
+				+ "(nome, telefone, sexo, cep, logradouro, numero, "
 				+ "complemento, bairro, cidade, estado, login, senha, ativo) " 
-				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		System.out.println("Salvando usuario: " + usuario);
 
 		stmt.setString(1, usuario.getNome());
 		stmt.setString(2, usuario.getTelefone());
-		stmt.setString(3, usuario.getCep());
-		stmt.setString(4, usuario.getLogradouro());
-		stmt.setString(5, usuario.getNumero());
-		stmt.setString(6, usuario.getComplemento());
-		stmt.setString(7, usuario.getBairro());
-		stmt.setString(8, usuario.getCidade());
-		stmt.setString(9, usuario.getEstado());
-		stmt.setString(10, usuario.getLogin());
-		stmt.setString(11, usuario.getSenha());
-		stmt.setInt(12, usuario.getAtivo() ? 1 : 0);
+		stmt.setString(3, usuario.getSexo().toString());
+		stmt.setString(4, usuario.getCep());
+		stmt.setString(5, usuario.getLogradouro());
+		stmt.setString(6, usuario.getNumero());
+		stmt.setString(7, usuario.getComplemento());
+		stmt.setString(8, usuario.getBairro());
+		stmt.setString(9, usuario.getCidade());
+		stmt.setString(10, usuario.getEstado());
+		stmt.setString(11, usuario.getLogin());
+		stmt.setString(12, usuario.getSenha());
+		stmt.setInt(13, usuario.getAtivo() ? 1 : 0);
 
 		stmt.execute();
 
@@ -155,7 +157,10 @@ public class UsuarioDao {
 	}
 
 	public void editarUsuario(Long id, Usuario usuario) throws SQLException {
-		String sql = "update usuario set nome = ?, telefone = ?, ativo = ? where id = ? and login <> 'admin'";
+		String sql = ""
+				+ "update usuario "
+				+ "set nome = ?, telefone = ?, sexo = ?, ativo = ? "
+				+ "where id = ? and login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, usuario.getNome());
 		try {
@@ -163,15 +168,25 @@ public class UsuarioDao {
 		} catch (NullPointerException e) {
 			stmt.setString(2, null);
 		}
-		stmt.setInt(3, usuario.getAtivo() ? 1 : 0);
-		stmt.setLong(4, id);
+		stmt.setString(3, usuario.getSexo().toString());
+		stmt.setInt(4, usuario.getAtivo() ? 1 : 0);
+		stmt.setLong(5, id);
 		stmt.executeUpdate();
 	}
 
 	private Usuario resultSetToUsuario(ResultSet rs) throws SQLException {
-		return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), rs.getString("cep"),
-				rs.getString("logradouro"), rs.getString("numero"), rs.getString("complemento"), rs.getString("bairro"),
-				rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"));
+		String sexoString = rs.getString("sexo");
+		if (sexoString != null) {
+			return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), SexoUsuario.valueOf(sexoString), rs.getString("cep"),
+					rs.getString("logradouro"), rs.getString("numero"), rs.getString("complemento"), rs.getString("bairro"),
+					rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"));			
+		} else {
+			return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), null, rs.getString("cep"),
+					rs.getString("logradouro"), rs.getString("numero"), rs.getString("complemento"), rs.getString("bairro"),
+					rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"));
+
+		}
+		
 	}
 	
 	private File2Upload resultSet2FileComplete(ResultSet rs) throws SQLException {

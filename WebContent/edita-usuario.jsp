@@ -70,28 +70,63 @@
 						</div>
 						<div class="col-md-8">
 							<div class="card-body">
-								<form action="usuarios?acao=editar" method="post" enctype="multipart/form-data">
-									<div class="form-group">
-										<div class="form-label-group">
-											<input type="text" name="login" id="inputLogin"
-												value="${ usuario.login }" class="form-control"
-												placeholder="Usuário" disabled> <label
-												for="inputLogin">Usuário</label>
+								<form action="usuarios?acao=editar" method="post"
+									enctype="multipart/form-data">
+									<div class="form-group form-row">
+										<div class="col-md-12">
+											<div class="form-label-group">
+												<input type="text" name="login" id="inputLogin"
+													value="${ usuario.login }" class="form-control"
+													placeholder="Usuário" disabled> <label
+													for="inputLogin">Usuário</label>
+											</div>
 										</div>
 									</div>
-									<div class="form-group">
-										<div class="form-label-group">
-											<input type="text" name="nome" id="inputNome"
-												value="${ usuario.nome }" class="form-control"
-												placeholder="Nome" required="required"> <label
-												for="inputNome">Nome</label>
+									<div class="form-group form-row">
+										<div class="col-md-6">
+											<div class="form-label-group">
+												<input type="text" name="nome" id="inputNome"
+													value="${ usuario.nome }" class="form-control"
+													placeholder="Nome" required="required"> <label
+													for="inputNome">Nome</label>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-label-group">
+												<c:if test="${ usuario.sexo != 'FEMININO' }">
+													<div class="form-check form-check-inline">
+														<input class="form-check-input" type="radio"
+															name="radioSexo" id="radioSexo1" value="opt1" checked>
+														<label class="form-check-label" for="radioSexo1">Masculino</label>
+													</div>
+													<div class="form-check form-check-inline">
+														<input class="form-check-input" type="radio"
+															name="radioSexo" id="radioSexo2" value="opt2"> <label
+															class="form-check-label" for="radioSexo2">Feminino</label>
+													</div>
+												</c:if>
+												<c:if test="${ usuario.sexo == 'FEMININO' }">
+													<div class="form-check form-check-inline">
+														<input class="form-check-input" type="radio"
+															name="radioSexo" id="radioSexo1" value="opt1">
+														<label class="form-check-label" for="radioSexo1">Masculino</label>
+													</div>
+													<div class="form-check form-check-inline">
+														<input class="form-check-input" type="radio"
+															name="radioSexo" id="radioSexo2" value="opt2" checked> <label
+															class="form-check-label" for="radioSexo2">Feminino</label>
+													</div>
+												</c:if>
+											</div>
 										</div>
 									</div>
-									<div class="form-group">
-										<div class="form-label-group">
-											<input type="text" name="telefone" id="inputTelefone"
-												value="${ usuario.telefone }" class="form-control"
-												placeholder="Nome"> <label for="inputTelefone">Telefone</label>
+									<div class="form-group form-row">
+										<div class="col-md-6">
+											<div class="form-label-group">
+												<input type="text" name="telefone" id="inputTelefone"
+													value="${ usuario.telefone }" class="form-control"
+													placeholder="Nome"> <label for="inputTelefone">Telefone</label>
+											</div>
 										</div>
 									</div>
 
@@ -99,19 +134,34 @@
 										<div class="col-md-4">
 											<div class="custom-file">
 												<input type="file" name="foto" id="foto"
-													class="custom-file-input" accept="image/*" 
-													value=""> <label
-													class="custom-file-label" for="foto">Escolha uma
-													foto...</label>
+													class="custom-file-input" accept="image/*" value="">
+												<label class="custom-file-label" for="foto">Escolha
+													uma foto...</label>
 											</div>
 										</div>
 										<div class="col-md-4">
 											<div class="custom-file">
 												<input type="file" name="pdf" id="pdf"
 													class="custom-file-input" accept="application/pdf"
-													value="${ usuario.pdfFile.fileB64 }">
-												<label class="custom-file-label" for="pdf">Escolha
-													um PDF...</label>
+													value="${ usuario.pdfFile.fileB64 }"> <label
+													class="custom-file-label" for="pdf">Escolha um
+													PDF...</label>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<div class="form-check">
+													<c:if test="${ usuario.ativo }">
+														<input class="form-check-input" id="usuarioAtivo"
+															name="usuarioAtivo" type="checkbox" value="ativo" checked>
+													</c:if>
+													<c:if test="${ not usuario.ativo }">
+														<input class="form-check-input" id="usuarioAtivo"
+															name="usuarioAtivo" type="checkbox" value="ativo">
+													</c:if>
+													<label class="form-check-label" for="usuarioAtivo">
+														Ativo </label>
+												</div>
 											</div>
 										</div>
 									</div>

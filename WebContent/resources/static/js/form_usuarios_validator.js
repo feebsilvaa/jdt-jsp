@@ -187,6 +187,7 @@ function validaCampos() {
 	let inputLoginVal = $('#inputLogin').val();
 	let inputSenhaVal = $('#inputPassword').val();
 	let inputSenhaConfirmVal = $('#confirmPassword').val();
+	let selectPerfilVal = $('#selectPerfil').val();
 
 	let errors = [];
 
@@ -229,6 +230,11 @@ function validaCampos() {
 	if (inputSenhaConfirmVal == '') {
 		errors
 				.push("O campo confirmação de senha é de preenchimento obrigatório.");
+	}
+	
+	if (selectPerfilVal == 'non_value') {
+		errors
+				.push("Selecione um perfil válido.");
 	}
 
 	if (inputSenhaVal != inputSenhaConfirmVal) {

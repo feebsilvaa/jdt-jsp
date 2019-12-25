@@ -153,7 +153,7 @@
 
 							<div class="form-group">
 								<div class="form-row">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="form-label-group">
 											<input type="text" name="nome" id="inputNome"
 												value="${ nomeForm }" class="form-control"
@@ -161,16 +161,31 @@
 												*</label>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="form-label-group">
 											<input type="text" name="telefone" id="inputTelefone"
 												value="${ telefoneForm }" class="form-control"
 												placeholder="Telefone"> <label for="inputTelefone">Telefone</label>
 										</div>
 									</div>
+									<div class="col-md-4">
+									<div class="form-group">
+										<div class="form-label-group">
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio"
+													name="radioSexo" id="radioSexo1" value="opt1" checked>
+												<label class="form-check-label" for="radioSexo1">Masculino</label>
+											</div>
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="radio"
+													name="radioSexo" id="radioSexo2" value="opt2"> <label
+													class="form-check-label" for="radioSexo2">Feminino</label>
+											</div>
+										</div>
+									</div>
+								</div>
 								</div>
 							</div>
-
 							<div class="form-group">
 								<div class="form-row">
 									<div class="col-md-3">
@@ -265,6 +280,24 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col-md-4">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<label class="input-group-text" for="selectPerfil">Perfil</label>
+											</div>
+											<select class="custom-select" id="selectPerfil" name="perfil">
+												<option value="non_value" selected>Selecione...</option>
+												<option value="ADM">Administrador</option>
+												<option value="SECR">Secretário(a)</option>
+												<option value="GER">Gerente</option>
+												<option value="FUNC">Funcionário</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
 							<div class="form-row">
 								<div class="col-md-4">
 									<div class="custom-file">
@@ -286,7 +319,7 @@
 										<div class="form-check">
 											<input class="form-check-input" 
 												id="usuarioAtivo" name="usuarioAtivo"
-												type="checkbox" value="${ ativoForm }"> <label class="form-check-label"
+												type="checkbox" value="ativo"> <label class="form-check-label"
 												for="usuarioAtivo"> Ativo </label>
 										</div>
 									</div>
@@ -319,6 +352,7 @@
 										<th>Id</th>
 										<th>Nome</th>
 										<th>Telefone</th>
+										<th>Sexo</th>
 										<th>Endereço</th>
 										<th>Username</th>
 										<th>Ativo</th>
@@ -331,6 +365,7 @@
 										<th>Id</th>
 										<th>Nome</th>
 										<th>Telefone</th>
+										<th>Sexo</th>
 										<th>Endereço</th>
 										<th>Username</th>
 										<th>Ativo</th>
@@ -345,9 +380,17 @@
 												<td><span>${ usuario.id }</span></td>
 												<td><span>${ usuario.nome }</span></td>
 												<td><span>${ usuario.telefone }</span></td>
+												<td><span>${ usuario.sexo }</span></td>
 												<td><span>${ usuario.endereco }</span></td>
 												<td><span>${ usuario.login }</span></td>
-												<td><span>${ usuario.ativo }</span></td>
+												<td>
+													<c:if test="${ usuario.ativo }">
+														<span>Ativo</span>
+													</c:if>
+													<c:if test="${ not usuario.ativo }">
+														<span>Inativo</span>
+													</c:if>
+												</td>
 												<td><c:if test="${ !empty usuario.tempMiniFoto }">
 														<span> <a
 															href="usuarios?acao=downloadFile&idFile=${ usuario.fotoFile.id }">

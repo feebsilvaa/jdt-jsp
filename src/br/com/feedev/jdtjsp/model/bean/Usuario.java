@@ -8,6 +8,8 @@ public class Usuario {
 
 	private String telefone;
 
+	private SexoUsuario sexo;
+
 	private String endereco;
 
 	private String cep;
@@ -31,23 +33,24 @@ public class Usuario {
 	private String confirmaSenha;
 
 	private File2Upload fotoFile;
-	
+
 	private String tempFoto;
-	
+
 	private String tempMiniFoto;
 
 	private File2Upload pdfFile;
-	
+
 	private String tempPdf;
-	
+
 	private Boolean ativo;
 
 	public Usuario() {
 	}
 
-	public Usuario(String nome, String telefone, String login, String senha, Boolean ativo) {
+	public Usuario(String nome, String telefone, SexoUsuario sexo, String login, String senha, Boolean ativo) {
 		this.nome = nome;
 		this.telefone = telefone;
+		this.sexo = sexo;
 		this.login = login;
 		this.senha = senha;
 		this.ativo = ativo;
@@ -61,19 +64,22 @@ public class Usuario {
 		this.ativo = ativo;
 	}
 
-	public Usuario(Long id, String nome, String telefone, String login, String senha, Boolean ativo) {
+	public Usuario(Long id, String nome, SexoUsuario sexo, String telefone, String login, String senha, Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
+		this.sexo = sexo;
 		this.telefone = telefone;
 		this.login = login;
 		this.senha = senha;
 		this.ativo = ativo;
 	}
 
-	public Usuario(String nome, String telefone, String cep, String logradouro, String numero, String complemento,
-			String bairro, String cidade, String estado, String login, String senha, String confirmaSenha, Boolean ativo) {
+	public Usuario(String nome, String telefone, SexoUsuario sexo, String cep, String logradouro, String numero,
+			String complemento, String bairro, String cidade, String estado, String login, String senha,
+			String confirmaSenha, Boolean ativo) {
 		this.nome = nome;
 		this.telefone = telefone;
+		this.sexo = sexo;
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.numero = numero;
@@ -87,11 +93,13 @@ public class Usuario {
 		this.ativo = ativo;
 	}
 
-	public Usuario(Long id, String nome, String telefone, String cep, String logradouro, String numero,
-			String complemento, String bairro, String cidade, String estado, String login, String senha, Boolean ativo) {
+	public Usuario(Long id, String nome, String telefone, SexoUsuario sexo, String cep, String logradouro,
+			String numero, String complemento, String bairro, String cidade, String estado, String login, String senha,
+			Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
+		this.sexo = sexo;
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.numero = numero;
@@ -103,13 +111,14 @@ public class Usuario {
 		this.senha = senha;
 		this.ativo = ativo;
 	}
-	
-	public Usuario(Long id, String nome, String telefone, String cep, String logradouro, String numero,
-			String complemento, String bairro, String cidade, String estado, String login, String senha,
+
+	public Usuario(Long id, String nome, String telefone, SexoUsuario sexo, String cep, String logradouro,
+			String numero, String complemento, String bairro, String cidade, String estado, String login, String senha,
 			String confirmaSenha, File2Upload fotoFile, File2Upload pdfFile, Boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
+		this.sexo = sexo;
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.numero = numero;
@@ -163,6 +172,14 @@ public class Usuario {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+	
+	public SexoUsuario getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(SexoUsuario sexo) {
+		this.sexo = sexo;
 	}
 
 	public String getCep() {
@@ -243,21 +260,21 @@ public class Usuario {
 
 	public String getTempFoto() {
 		if (fotoFile != null) {
-			tempFoto = "data:" + fotoFile.getFileType() + ";base64," + fotoFile.getFileB64();			
+			tempFoto = "data:" + fotoFile.getFileType() + ";base64," + fotoFile.getFileB64();
 		}
 		return tempFoto;
 	}
 
 	public String getTempPdf() {
 		if (pdfFile != null) {
-			tempPdf = "data:" + pdfFile.getFileType() + ";base64," + pdfFile.getFileB64();			
+			tempPdf = "data:" + pdfFile.getFileType() + ";base64," + pdfFile.getFileB64();
 		}
 		return tempPdf;
 	}
-	
+
 	public String getTempMiniFoto() {
 		if (fotoFile != null) {
-			tempMiniFoto = "data:image/png;base64," + fotoFile.getMiniaturaB64();			
+			tempMiniFoto = "data:image/png;base64," + fotoFile.getMiniaturaB64();
 		}
 		return tempMiniFoto;
 	}
@@ -281,7 +298,7 @@ public class Usuario {
 	public void setConfirmaSenha(String confirmaSenha) {
 		this.confirmaSenha = confirmaSenha;
 	}
-	
+
 	public Boolean getAtivo() {
 		return ativo;
 	}
@@ -330,12 +347,12 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", endereco=" + endereco + ", cep="
-				+ cep + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento=" + complemento
-				+ ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", login=" + login + ", senha="
-				+ senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", tempFoto=" + tempFoto
-				+ ", tempMiniFoto=" + tempMiniFoto + ", pdfFile=" + pdfFile + ", tempPdf=" + tempPdf + ", ativo="
-				+ ativo + "]";
+		return "Usuario [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", sexo=" + sexo + ", endereco="
+				+ endereco + ", cep=" + cep + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
+				+ complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", login=" + login
+				+ ", senha=" + senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", tempFoto="
+				+ tempFoto + ", tempMiniFoto=" + tempMiniFoto + ", pdfFile=" + pdfFile + ", tempPdf=" + tempPdf
+				+ ", ativo=" + ativo + "]";
 	}
 
 }

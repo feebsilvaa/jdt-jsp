@@ -30,6 +30,8 @@ import br.com.feedev.jdtjsp.controller.service.FilesService;
 import br.com.feedev.jdtjsp.controller.service.UsuarioService;
 import br.com.feedev.jdtjsp.exception.UsuarioExistenteException;
 import br.com.feedev.jdtjsp.model.bean.File2Upload;
+import br.com.feedev.jdtjsp.model.bean.PerfilUsuario;
+import br.com.feedev.jdtjsp.model.bean.SexoUsuario;
 import br.com.feedev.jdtjsp.model.bean.Usuario;
 
 @WebServlet(urlPatterns = { "/usuarios" })
@@ -42,7 +44,7 @@ public class UsuarioServlet extends HttpServlet {
 	private static final long serialVersionUID = 3020240496211414881L;
 
 	private static UsuarioService usuarioService;
-	
+
 	private static FilesService filesService;
 
 	public UsuarioServlet() {
@@ -114,7 +116,7 @@ public class UsuarioServlet extends HttpServlet {
 			}
 		case "downloadFile":
 			String idFileParam = request.getParameter("idFile");
-			
+
 			try {
 				File2Upload file2Download = filesService.buscarFilePorId(idFileParam);
 				if (file2Download != null) {
@@ -128,25 +130,26 @@ public class UsuarioServlet extends HttpServlet {
 					byte[] imageB64 = Base64.getDecoder().decode(file2Download.getFileB64());
 					// Coloca os bytes em um objeto de entrada para processar
 					InputStream imageIS = new ByteArrayInputStream(imageB64);
-					
+
 					int read = 0;
 					byte[] bytes = new byte[1024];
 					OutputStream os = response.getOutputStream();
-					
-					while((read = imageIS.read(bytes)) != -1) {
+
+					while ((read = imageIS.read(bytes)) != -1) {
 						os.write(bytes, 0, read);
 					}
-					
+
 					os.flush();
 					os.close();
-					
+
 				}
-				
+
 			} catch (NumberFormatException | SQLException e) {
-				this.retornaErroForm("usuarios.jsp", "Ocorreu um ao tentar realizar o download do arquivo.", null, request, response);
+				this.retornaErroForm("usuarios.jsp", "Ocorreu um ao tentar realizar o download do arquivo.", null,
+						request, response);
 				return;
 			}
-			
+
 			break;
 		default:
 			try {
@@ -172,15 +175,16 @@ public class UsuarioServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		String acaoParam = request.getParameter("acao");
-		
+
 		if (acaoParam == null) {
 			doGet(request, response);
 			return;
 		}
-		
+
 		String idParam = null;
 		String nomeParam = null;
 		String telefoneParam = null;
+		SexoUsuario sexoParam = null;
 		String cepParam = null;
 		String logradouroParam = null;
 		String numeroParam = null;
@@ -191,6 +195,7 @@ public class UsuarioServlet extends HttpServlet {
 		String loginParam = null;
 		String senhaParam = null;
 		String confirmaSenhaParam = null;
+		PerfilUsuario perfilParam = null;
 		File2Upload fotoFile = null;
 		File2Upload pdfFile = null;
 		boolean usuarioAtivoParam = false;
@@ -203,6 +208,8 @@ public class UsuarioServlet extends HttpServlet {
 			idParam = request.getParameter("id");
 			nomeParam = request.getParameter("nome");
 			telefoneParam = request.getParameter("telefone");
+			sexoParam = "opt1".equalsIgnoreCase(request.getParameter("radioSexo")) ? SexoUsuario.MASCULINO
+					: SexoUsuario.FEMININO;
 			cepParam = request.getParameter("cep");
 			logradouroParam = request.getParameter("logradouro");
 			numeroParam = request.getParameter("numero");
@@ -213,18 +220,21 @@ public class UsuarioServlet extends HttpServlet {
 			loginParam = request.getParameter("login");
 			senhaParam = request.getParameter("senha");
 			confirmaSenhaParam = request.getParameter("confirmaSenha");
-			String usuarioAtivo = request.getParameter("usuarioAtivo");
-			System.out.println(usuarioAtivo);
-			usuarioAtivoParam = "on".equalsIgnoreCase(request.getParameter("usuarioAtivo")) ? true : false;
+
+			perfilParam = PerfilUsuario.valueOf(request.getParameter("perfil"));
+
+			usuarioAtivoParam = "ativo".equalsIgnoreCase(request.getParameter("usuarioAtivo")) ? true : false;
 			
+			// CONTINUAR IMPLEMENTACAO DO PERFIL
+
 			try {
 				// FILE UPLOAD de imagem e pdf
 				if (ServletFileUpload.isMultipartContent(request)) {
 					Part fotoPart = request.getPart("foto");
 					fotoFile = part2FileObj(fotoPart);
 					Part pdfPart = request.getPart("pdf");
-					pdfFile = part2FileObj(pdfPart);			
-				}	
+					pdfFile = part2FileObj(pdfPart);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -242,7 +252,6 @@ public class UsuarioServlet extends HttpServlet {
 			params.put("loginParam", loginParam);
 			params.put("senhaParam", senhaParam);
 			params.put("confirmaSenhaParam", confirmaSenhaParam);
-			params.put("usuarioAtivoParam", usuarioAtivoParam ? "on" : null);
 			if (fotoFile != null) {
 				params.put("fotoParam", fotoFile.getFileB64());
 			}
@@ -250,9 +259,9 @@ public class UsuarioServlet extends HttpServlet {
 				params.put("pdfParam", pdfFile.getFileB64());
 			}
 
-			Usuario userForm = new Usuario(null, nomeParam, telefoneParam, cepParam, logradouroParam, numeroParam,
-					complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam, confirmaSenhaParam,
-					fotoFile, pdfFile, usuarioAtivoParam);
+			Usuario userForm = new Usuario(null, nomeParam, telefoneParam, sexoParam, cepParam, logradouroParam,
+					numeroParam, complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam,
+					confirmaSenhaParam, fotoFile, pdfFile, usuarioAtivoParam);
 
 			System.out.println(userForm);
 
@@ -296,21 +305,23 @@ public class UsuarioServlet extends HttpServlet {
 			}
 
 		case "editar":
-			
+
 			idParam = request.getParameter("id");
 			nomeParam = request.getParameter("nome");
 			telefoneParam = request.getParameter("telefone");
-			usuarioAtivoParam = "on".equalsIgnoreCase(request.getParameter("ativo")) ? true : false;
-			
+			sexoParam = "opt1".equalsIgnoreCase(request.getParameter("radioSexo")) ? SexoUsuario.MASCULINO
+					: SexoUsuario.FEMININO;
+			usuarioAtivoParam = "ativo".equalsIgnoreCase(request.getParameter("usuarioAtivo")) ? true : false;
+
 			try {
 				// FILE UPLOAD de imagem e pdf
 				if (ServletFileUpload.isMultipartContent(request)) {
 					Part fotoPart = request.getPart("foto");
 					fotoFile = part2FileObj(fotoPart);
-					
+
 					Part pdfPart = request.getPart("pdf");
-					pdfFile = part2FileObj(pdfPart);			
-				}	
+					pdfFile = part2FileObj(pdfPart);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -324,11 +335,10 @@ public class UsuarioServlet extends HttpServlet {
 			if (pdfFile != null) {
 				params.put("pdfParam", pdfFile.getFileB64());
 			}
-			params.put("usuarioAtivoParam", usuarioAtivoParam ? "on" : null);
-			
-			Usuario userFormEdit = new Usuario(Long.valueOf(idParam), nomeParam, telefoneParam, cepParam, logradouroParam, numeroParam,
-					complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam, confirmaSenhaParam,
-					fotoFile, pdfFile, usuarioAtivoParam);
+
+			Usuario userFormEdit = new Usuario(Long.valueOf(idParam), nomeParam, telefoneParam, sexoParam, cepParam,
+					logradouroParam, numeroParam, complementoParam, bairroParam, cidadeParam, estadoParam, loginParam,
+					senhaParam, confirmaSenhaParam, fotoFile, pdfFile, usuarioAtivoParam);
 
 			if (isFormValido(nomeParam)) {
 
@@ -360,6 +370,7 @@ public class UsuarioServlet extends HttpServlet {
 
 	/**
 	 * Converte um objeto Part para File2Upload
+	 * 
 	 * @param part
 	 * @return
 	 * @throws IOException
@@ -373,34 +384,35 @@ public class UsuarioServlet extends HttpServlet {
 			file.setFileName(part.getSubmittedFileName());
 			file.setFileSize(part.getSize());
 			file.setFileType(part.getContentType());
-			
+
 			if (file.getFileType().contains("image")) {
 				// transforma byte em bufferdImage
 				BufferedImage fotoBuff = ImageIO.read(new ByteArrayInputStream(fileBytes));
 				// tipo da imagem
 				int type = fotoBuff.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : fotoBuff.getType();
-				// cria imagem em miniatura 50 x 50	
+				// cria imagem em miniatura 50 x 50
 				int altura = 50;
 				int largura = 50;
 				BufferedImage resizedFotoBuff = new BufferedImage(largura, altura, type);
 				Graphics2D g = resizedFotoBuff.createGraphics();
 				g.drawImage(fotoBuff, 0, 0, largura, altura, null);
 				g.dispose();
-				
-				//Escrever imagem novamente
+
+				// Escrever imagem novamente
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write(resizedFotoBuff, "png", baos);
-				
+
 //				String miniaturaB64 = DatatypeConverter.printBase64Binary(baos.toByteArray());
 				String miniaturaB64II = Base64.getEncoder().encodeToString(baos.toByteArray());
 				file.setMiniaturaB64(miniaturaB64II);
 			}
 		}
 		return file;
-	} 
-	
+	}
+
 	/**
 	 * Converte a entrada de fluxo de dados da imagem para um array de byte
+	 * 
 	 * @param is
 	 * @return
 	 * @throws IOException
@@ -441,7 +453,7 @@ public class UsuarioServlet extends HttpServlet {
 
 		return true;
 	}
-	
+
 	private boolean isFormValido(String nomeParam) {
 		return (nomeParam != null && !nomeParam.isEmpty());
 	}
