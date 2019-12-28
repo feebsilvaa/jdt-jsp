@@ -289,10 +289,10 @@
 											</div>
 											<select class="custom-select" id="selectPerfil" name="perfil">
 												<option value="non_value" selected>Selecione...</option>
-												<option value="ADM">Administrador</option>
-												<option value="SECR">Secretário(a)</option>
-												<option value="GER">Gerente</option>
-												<option value="FUNC">Funcionário</option>
+												<option value="ADMINISTRADOR">Administrador</option>
+												<option value="SECRETARIO">Secretário(a)</option>
+												<option value="GERENTE">Gerente</option>
+												<option value="FUNCIONARIO">Funcionário</option>
 											</select>
 										</div>
 									</div>
@@ -356,6 +356,7 @@
 										<th>Endereço</th>
 										<th>Username</th>
 										<th>Ativo</th>
+										<th>Perfil</th>
 										<th>Imagem</th>
 										<th>Ações</th>
 									</tr>
@@ -369,6 +370,7 @@
 										<th>Endereço</th>
 										<th>Username</th>
 										<th>Ativo</th>
+										<th>Perfil</th>
 										<th>Imagem</th>
 										<th>Ações</th>
 									</tr>
@@ -380,7 +382,7 @@
 												<td><span>${ usuario.id }</span></td>
 												<td><span>${ usuario.nome }</span></td>
 												<td><span>${ usuario.telefone }</span></td>
-												<td><span>${ usuario.sexo }</span></td>
+												<td><span>${ usuario.sexo.descricao }</span></td>
 												<td><span>${ usuario.endereco }</span></td>
 												<td><span>${ usuario.login }</span></td>
 												<td>
@@ -391,6 +393,7 @@
 														<span>Inativo</span>
 													</c:if>
 												</td>
+												<td><span>${ usuario.perfil.descricao }</span></td>
 												<td><c:if test="${ !empty usuario.tempMiniFoto }">
 														<span> <a
 															href="usuarios?acao=downloadFile&idFile=${ usuario.fotoFile.id }">

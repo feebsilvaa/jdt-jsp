@@ -48,17 +48,6 @@
 					<li class="breadcrumb-item active">Produtos</li>
 				</ol>
 
-				<%-- <%
-        	pageContext.setAttribute("successMessageHeader", response.getHeader("successMessage"));
-		%>
-        
-        <c:if test="${ !empty successMessageHeader}">
-	        <div class="alert alert-success" role="alert">
-			  <span>${ successMessageHeader }</span>
-			</div>	        
-        </c:if> --%>
-
-
 				<div id="errorMessage">
 					<c:if test="${ errorMessage != null }">
 						<div class="alert alert-danger" role="alert">
@@ -67,83 +56,6 @@
 					</c:if>
 				</div>
 
-				<!-- 
-				Icon Cards
-				<div class="row">
-					<div class="col-xl-3 col-sm-6 mb-3">
-						<div class="card text-white bg-primary o-hidden h-100">
-							<div class="card-body">
-								<div class="card-body-icon">
-									<i class="fas fa-fw fa-comments"></i>
-								</div>
-								<div class="mr-5">26 New Messages!</div>
-							</div>
-							<a class="card-footer text-white clearfix small z-1" href="#">
-								<span class="float-left">View Details</span> <span
-								class="float-right"> <i class="fas fa-angle-right"></i>
-							</span>
-							</a>
-						</div>
-					</div>
-					<div class="col-xl-3 col-sm-6 mb-3">
-						<div class="card text-white bg-warning o-hidden h-100">
-							<div class="card-body">
-								<div class="card-body-icon">
-									<i class="fas fa-fw fa-list"></i>
-								</div>
-								<div class="mr-5">11 New Tasks!</div>
-							</div>
-							<a class="card-footer text-white clearfix small z-1" href="#">
-								<span class="float-left">View Details</span> <span
-								class="float-right"> <i class="fas fa-angle-right"></i>
-							</span>
-							</a>
-						</div>
-					</div>
-					<div class="col-xl-3 col-sm-6 mb-3">
-						<div class="card text-white bg-success o-hidden h-100">
-							<div class="card-body">
-								<div class="card-body-icon">
-									<i class="fas fa-fw fa-shopping-cart"></i>
-								</div>
-								<div class="mr-5">123 New Orders!</div>
-							</div>
-							<a class="card-footer text-white clearfix small z-1" href="#">
-								<span class="float-left">View Details</span> <span
-								class="float-right"> <i class="fas fa-angle-right"></i>
-							</span>
-							</a>
-						</div>
-					</div>
-					<div class="col-xl-3 col-sm-6 mb-3">
-						<div class="card text-white bg-danger o-hidden h-100">
-							<div class="card-body">
-								<div class="card-body-icon">
-									<i class="fas fa-fw fa-life-ring"></i>
-								</div>
-								<div class="mr-5">13 New Tickets!</div>
-							</div>
-							<a class="card-footer text-white clearfix small z-1" href="#">
-								<span class="float-left">View Details</span> <span
-								class="float-right"> <i class="fas fa-angle-right"></i>
-							</span>
-							</a>
-						</div>
-					</div>
-				</div>
- -->
-				<%-- 
-				<!-- Area Chart Example-->
-        <div class="card mb-3">
-          <div class="card-header">
-            <i class="fas fa-chart-area"></i>
-            Area Chart Example</div>
-          <div class="card-body">
-            <canvas id="myAreaChart" width="100%" height="30"></canvas>
-          </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div> 
-        --%>
 				<!-- DataTables Example -->
 				<div class="card card-register mx-auto mt-5">
 					<div class="card-header">Cadastro de produto</div>
@@ -159,7 +71,7 @@
 							</div>
 							<div class="form-group">
 								<div class="form-row">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="form-group">
 											<div class="form-label-group">
 												<input type="number" name="quantidade" id="inputQuantidade"
@@ -169,13 +81,29 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="form-group">
 											<div class="form-label-group">
 												<input type="number" name="preco" id="inputValor"
 													value="${ precoForm }" class="form-control" min="0"
 													max="999999999" placeholder="Valor"> <label
 													for="inputValor">Valor</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<div class="input-group mb-3">
+												<div class="input-group-prepend">
+													<label class="input-group-text" for="selectCategoria">Categoria</label>
+												</div>
+												<select class="custom-select" id="selectCategoria"
+													name="categoria">
+													<option value="non_value" selected>Selecione...</option>
+													<c:forEach items="${ categoriasProduto }" var="categoria">
+														<option value="${ categoria.descricao }">${ categoria.descricao }</option>
+													</c:forEach>
+												</select>
 											</div>
 										</div>
 									</div>
@@ -203,6 +131,7 @@
 										<th>Nome</th>
 										<th>Quantidade</th>
 										<th>Valor</th>
+										<th>Categoria</th>
 										<th>Ações</th>
 									</tr>
 								</thead>
@@ -211,6 +140,7 @@
 										<th>Nome</th>
 										<th>Quantidade</th>
 										<th>Valor</th>
+										<th>Categoria</th>
 										<th>Ações</th>
 									</tr>
 								</tfoot>
@@ -221,19 +151,21 @@
 												<td><span>${ produto.nome }</span></td>
 												<td><span>${ produto.quantidade }</span></td>
 												<td><span>R$ ${ produto.preco }</span></td>
-												<td>
-													<label for="icoEditar" data-toggle="tooltip" data-placement="top" title="Editar">
-														<a id="icoEditar" class="btn btn-outline-dark" href="produtos?acao=edicao&id=${ produto.id }">
-															<i class="fas fa-edit"></i>
-														</a>
-													</label>
-													<label for="icoExcluir" data-toggle="tooltip" data-placement="top" title="Excluir">
-														 <a id="icoExcluir" class="btn btn-outline-dark" onclick="fillModal('${ produto.id }')" 
-														 	data-toggle="modal" data-target="#confirmaExclusaoModal">
-														 	<i class="fas fa-trash"></i>
-													 	</a>
-													</label> 	
-											 	</td>
+												<td><span>${ produto.categoria.descricao }</span></td>
+												<td><label for="icoEditar" data-toggle="tooltip"
+													data-placement="top" title="Editar"> <a
+														id="icoEditar" class="btn btn-outline-dark"
+														href="produtos?acao=edicao&id=${ produto.id }"> <i
+															class="fas fa-edit"></i>
+													</a>
+												</label> <label for="icoExcluir" data-toggle="tooltip"
+													data-placement="top" title="Excluir"> <a
+														id="icoExcluir" class="btn btn-outline-dark"
+														onclick="fillModal('${ produto.id }')" data-toggle="modal"
+														data-target="#confirmaExclusaoModal"> <i
+															class="fas fa-trash"></i>
+													</a>
+												</label></td>
 											</tr>
 										</c:forEach>
 									</c:catch>
@@ -241,9 +173,8 @@
 							</table>
 						</div>
 					</div>
-					<div
-						class="card-footer small text-mutATTR_TELEFONE_FORM, params.get("telefoneParam")ed">Updated
-						yesterday at 11:59 PM</div>
+					<div class="card-footer small text-muted">Updated yesterday
+						at 11:59 PM</div>
 				</div>
 
 			</div>
@@ -323,6 +254,7 @@
 			let inputNomeVal = $('#inputNome').val();
 			let inputQuantidadeVal = $('#inputQuantidade').val();
 			let inputValorVal = $('#inputValor').val();
+			let selectCategoriaVal = $('#selectCategoria').val();
 
 			let errors = [];
 
@@ -331,11 +263,16 @@
 			}
 
 			if (inputQuantidadeVal == '') {
-				errors.push("O campo quantidade é de preenchimento obrigatório.");
+				errors
+						.push("O campo quantidade é de preenchimento obrigatório.");
 			}
 
 			if (inputValorVal == '') {
 				errors.push("O campo valor é de preenchimento obrigatório.");
+			}
+
+			if (selectCategoriaVal == 'non_value') {
+				errors.push("Selecione uma categoria válida.");
 			}
 
 			if (errors.length > 0) {

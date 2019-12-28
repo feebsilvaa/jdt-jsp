@@ -1,5 +1,8 @@
 package br.com.feedev.jdtjsp.model.bean;
 
+import br.com.feedev.jdtjsp.model.enums.PerfilUsuario;
+import br.com.feedev.jdtjsp.model.enums.SexoUsuario;
+
 public class Usuario {
 
 	private Long id;
@@ -31,6 +34,8 @@ public class Usuario {
 	private String senha;
 
 	private String confirmaSenha;
+	
+	private PerfilUsuario perfil;
 
 	private File2Upload fotoFile;
 
@@ -56,15 +61,16 @@ public class Usuario {
 		this.ativo = ativo;
 	}
 
-	public Usuario(Long id, String nome, String login, String senha, Boolean ativo) {
+	public Usuario(Long id, String nome, String login, String senha, Boolean ativo, PerfilUsuario perfil) {
 		this.id = id;
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
 		this.ativo = ativo;
+		this.perfil = perfil;
 	}
 
-	public Usuario(Long id, String nome, SexoUsuario sexo, String telefone, String login, String senha, Boolean ativo) {
+	public Usuario(Long id, String nome, SexoUsuario sexo, String telefone, String login, String senha, Boolean ativo, PerfilUsuario perfil) {
 		this.id = id;
 		this.nome = nome;
 		this.sexo = sexo;
@@ -72,11 +78,12 @@ public class Usuario {
 		this.login = login;
 		this.senha = senha;
 		this.ativo = ativo;
+		this.perfil = perfil;
 	}
 
 	public Usuario(String nome, String telefone, SexoUsuario sexo, String cep, String logradouro, String numero,
 			String complemento, String bairro, String cidade, String estado, String login, String senha,
-			String confirmaSenha, Boolean ativo) {
+			String confirmaSenha, Boolean ativo, PerfilUsuario perfil) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.sexo = sexo;
@@ -91,11 +98,12 @@ public class Usuario {
 		this.senha = senha;
 		this.confirmaSenha = confirmaSenha;
 		this.ativo = ativo;
+		this.perfil = perfil;
 	}
 
 	public Usuario(Long id, String nome, String telefone, SexoUsuario sexo, String cep, String logradouro,
 			String numero, String complemento, String bairro, String cidade, String estado, String login, String senha,
-			Boolean ativo) {
+			Boolean ativo, PerfilUsuario perfil) {
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
@@ -110,11 +118,12 @@ public class Usuario {
 		this.login = login;
 		this.senha = senha;
 		this.ativo = ativo;
+		this.perfil = perfil;
 	}
 
 	public Usuario(Long id, String nome, String telefone, SexoUsuario sexo, String cep, String logradouro,
 			String numero, String complemento, String bairro, String cidade, String estado, String login, String senha,
-			String confirmaSenha, File2Upload fotoFile, File2Upload pdfFile, Boolean ativo) {
+			String confirmaSenha, File2Upload fotoFile, File2Upload pdfFile, Boolean ativo, PerfilUsuario perfil) {
 		this.id = id;
 		this.nome = nome;
 		this.telefone = telefone;
@@ -132,6 +141,7 @@ public class Usuario {
 		this.fotoFile = fotoFile;
 		this.pdfFile = pdfFile;
 		this.ativo = ativo;
+		this.perfil = perfil;
 	}
 
 	public Long getId() {
@@ -306,6 +316,26 @@ public class Usuario {
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
+	
+	public PerfilUsuario getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilUsuario perfil) {
+		this.perfil = perfil;
+	}
+
+	public void setTempFoto(String tempFoto) {
+		this.tempFoto = tempFoto;
+	}
+
+	public void setTempMiniFoto(String tempMiniFoto) {
+		this.tempMiniFoto = tempMiniFoto;
+	}
+
+	public void setTempPdf(String tempPdf) {
+		this.tempPdf = tempPdf;
+	}
 
 	public boolean validarLoginSenha(String login, String senha) {
 		if (login.equals("admin") && senha.equals("admin")) {
@@ -350,9 +380,9 @@ public class Usuario {
 		return "Usuario [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", sexo=" + sexo + ", endereco="
 				+ endereco + ", cep=" + cep + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
 				+ complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", login=" + login
-				+ ", senha=" + senha + ", confirmaSenha=" + confirmaSenha + ", fotoFile=" + fotoFile + ", tempFoto="
-				+ tempFoto + ", tempMiniFoto=" + tempMiniFoto + ", pdfFile=" + pdfFile + ", tempPdf=" + tempPdf
-				+ ", ativo=" + ativo + "]";
+				+ ", senha=" + senha + ", confirmaSenha=" + confirmaSenha + ", perfil=" + perfil + ", fotoFile="
+				+ fotoFile + ", tempFoto=" + tempFoto + ", tempMiniFoto=" + tempMiniFoto + ", pdfFile=" + pdfFile
+				+ ", tempPdf=" + tempPdf + ", ativo=" + ativo + "]";
 	}
 
 }

@@ -11,21 +11,25 @@ public class Produto {
 	private BigDecimal preco;
 
 	private Integer quantidade;
+	
+	private CategoriaProduto categoria;
 
 	public Produto() {
 	}
 
-	public Produto(String nome, BigDecimal preco, Integer quantidade) {
+	public Produto(String nome, BigDecimal preco, Integer quantidade, CategoriaProduto categoria) {
 		this.nome = nome;
 		this.preco = preco;
 		this.quantidade = quantidade;
+		this.categoria = categoria;
 	}
 
-	public Produto(Long id, String nome, BigDecimal preco, Integer quantidade) {
+	public Produto(Long id, String nome, BigDecimal preco, Integer quantidade, CategoriaProduto categoria) {
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
 		this.quantidade = quantidade;
+		this.categoria = categoria;
 	}
 
 	public Long getId() {
@@ -59,10 +63,19 @@ public class Produto {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
+	
+	public CategoriaProduto getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaProduto categoria) {
+		this.categoria = categoria;
+	}
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + ", quantidade=" + quantidade + "]";
+		return "Produto [id=" + id + ", nome=" + nome + ", preco=" + preco + ", quantidade=" + quantidade
+				+ ", categoria=" + categoria + "]";
 	}
 
 }

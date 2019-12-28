@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import br.com.feedev.jdtjsp.config.util.ApplicationConstants;
 import br.com.feedev.jdtjsp.controller.service.ProdutoService;
 import br.com.feedev.jdtjsp.exception.ProdutoExistenteException;
+import br.com.feedev.jdtjsp.model.bean.CategoriaProduto;
 import br.com.feedev.jdtjsp.model.bean.Produto;
 
 @WebServlet(urlPatterns = { "/produtos" })
@@ -125,6 +126,7 @@ public class ProdutoServlet extends HttpServlet {
 		String nomeParam;
 		String precoParam;
 		String quantidadeParam;
+		String categoriaParam;
 
 		HashMap<String, String> params = new HashMap<String, String>();
 
@@ -134,18 +136,20 @@ public class ProdutoServlet extends HttpServlet {
 			nomeParam = request.getParameter("nome");
 			precoParam = request.getParameter("preco");
 			quantidadeParam = request.getParameter("quantidade");
+			categoriaParam = request.getParameter("categoria");
 
 			params.put("nomeParam", nomeParam);
 			params.put("precoParam", precoParam);
 			params.put("quantidadeParam", quantidadeParam);
+			params.put("categoriaParam", categoriaParam);
 
 			if (isFormValido(nomeParam, precoParam, quantidadeParam)) {
-				
+
 				try {
 					try {
-						this.salvarProduto(
-								new Produto(nomeParam, new BigDecimal(precoParam), Integer.valueOf(quantidadeParam)),
-								request, response, params);
+						this.salvarProduto(new Produto(nomeParam, new BigDecimal(precoParam),
+								Integer.valueOf(quantidadeParam), new CategoriaProduto(null, categoriaParam)), request,
+								response, params);
 					} catch (ProdutoExistenteException e) {
 						this.retornaErroForm("produtos?acao=listar", e.getMessage(), params, request, response);
 						return;
@@ -275,7 +279,9 @@ public class ProdutoServlet extends HttpServlet {
 	private void listarProdutos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		List<Produto> produtos = produtoService.listar();
+		List<CategoriaProduto> categoriasProduto = produtoService.listarCategorias();
 		request.setAttribute("produtos", produtos);
+		request.setAttribute("categoriasProduto", categoriasProduto);
 		this.dispathTo("produtos.jsp", request, response);
 	}
 

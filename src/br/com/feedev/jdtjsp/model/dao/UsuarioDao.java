@@ -9,8 +9,9 @@ import java.util.List;
 
 import br.com.feedev.jdtjsp.config.conn.SingleConnection;
 import br.com.feedev.jdtjsp.model.bean.File2Upload;
-import br.com.feedev.jdtjsp.model.bean.SexoUsuario;
 import br.com.feedev.jdtjsp.model.bean.Usuario;
+import br.com.feedev.jdtjsp.model.enums.PerfilUsuario;
+import br.com.feedev.jdtjsp.model.enums.SexoUsuario;
 
 public class UsuarioDao {
 
@@ -36,11 +37,9 @@ public class UsuarioDao {
 	}
 
 	public void salvarUsuario(Usuario usuario) throws SQLException {
-		String sql = "" 
-				+ "insert into usuario "
-				+ "(nome, telefone, sexo, cep, logradouro, numero, "
-				+ "complemento, bairro, cidade, estado, login, senha, ativo) " 
-				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "" + "insert into usuario " + "(nome, telefone, sexo, cep, logradouro, numero, "
+				+ "complemento, bairro, cidade, estado, login, senha, ativo, perfil) "
+				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
 		System.out.println("Salvando usuario: " + usuario);
@@ -58,6 +57,7 @@ public class UsuarioDao {
 		stmt.setString(11, usuario.getLogin());
 		stmt.setString(12, usuario.getSenha());
 		stmt.setInt(13, usuario.getAtivo() ? 1 : 0);
+		stmt.setString(14, usuario.getPerfil().toString());
 
 		stmt.execute();
 
@@ -78,11 +78,8 @@ public class UsuarioDao {
 	}
 
 	public Usuario buscarUsuarioPorId(Long id) throws SQLException {
-		String sql = "select usu.*, ufu.id as file_id, ufu.* "
-				+ "from usuario usu " 
-				+ "left join usuario_files_uploads ufu " 
-				+ "on usu.id = ufu.usuario_id "
-				+ "where usu.login <> 'admin' "
+		String sql = "select usu.*, ufu.id as file_id, ufu.* " + "from usuario usu "
+				+ "left join usuario_files_uploads ufu " + "on usu.id = ufu.usuario_id " + "where usu.login <> 'admin' "
 				+ "and usu.id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 
@@ -106,12 +103,8 @@ public class UsuarioDao {
 
 	public List<Usuario> listar() throws SQLException {
 		List<Usuario> usuarios = new ArrayList<Usuario>();
-		String sql = ""
-				+ "select usu.*, ufu.id as file_id, ufu.* "
-				+ "from usuario usu "
-				+ "left join usuario_files_uploads ufu "
-				+ "on usu.id = ufu.usuario_id "
-				+ "where usu.login <> 'admin' "
+		String sql = "" + "select usu.*, ufu.id as file_id, ufu.* " + "from usuario usu "
+				+ "left join usuario_files_uploads ufu " + "on usu.id = ufu.usuario_id " + "where usu.login <> 'admin' "
 				+ "order by usu.id desc ";
 
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -123,9 +116,9 @@ public class UsuarioDao {
 			File2Upload file;
 			String file_type = resultSet.getString("file_type");
 			if (file_type != null && file_type.contains("image")) {
-				file = this.resultSet2FileMini(resultSet);	
+				file = this.resultSet2FileMini(resultSet);
 			} else {
-				file = this.resultSet2FileComplete(resultSet);				
+				file = this.resultSet2FileComplete(resultSet);
 			}
 			if (usuarios.contains(u)) { // Usuário ja está na lista
 				Usuario usuExistente = usuarios.get(usuarios.indexOf(u));
@@ -157,9 +150,7 @@ public class UsuarioDao {
 	}
 
 	public void editarUsuario(Long id, Usuario usuario) throws SQLException {
-		String sql = ""
-				+ "update usuario "
-				+ "set nome = ?, telefone = ?, sexo = ?, ativo = ? "
+		String sql = "" + "update usuario " + "set nome = ?, telefone = ?, sexo = ?, ativo = ? "
 				+ "where id = ? and login <> 'admin'";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, usuario.getNome());
@@ -177,26 +168,31 @@ public class UsuarioDao {
 	private Usuario resultSetToUsuario(ResultSet rs) throws SQLException {
 		String sexoString = rs.getString("sexo");
 		if (sexoString != null) {
-			return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), SexoUsuario.valueOf(sexoString), rs.getString("cep"),
-					rs.getString("logradouro"), rs.getString("numero"), rs.getString("complemento"), rs.getString("bairro"),
-					rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"));			
+			return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"),
+					SexoUsuario.valueOf(sexoString), rs.getString("cep"), rs.getString("logradouro"),
+					rs.getString("numero"), rs.getString("complemento"), rs.getString("bairro"), rs.getString("cidade"),
+					rs.getString("estado"), rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"),
+					PerfilUsuario.valueOf(rs.getString("perfil")));
 		} else {
-			return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), null, rs.getString("cep"),
-					rs.getString("logradouro"), rs.getString("numero"), rs.getString("complemento"), rs.getString("bairro"),
-					rs.getString("cidade"), rs.getString("estado"), rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"));
+			return new Usuario(rs.getLong("id"), rs.getString("nome"), rs.getString("telefone"), null,
+					rs.getString("cep"), rs.getString("logradouro"), rs.getString("numero"),
+					rs.getString("complemento"), rs.getString("bairro"), rs.getString("cidade"), rs.getString("estado"),
+					rs.getString("login"), rs.getString("senha"), rs.getBoolean("ativo"),
+					PerfilUsuario.valueOf(rs.getString("perfil")));
 
 		}
-		
+
 	}
-	
+
 	private File2Upload resultSet2FileComplete(ResultSet rs) throws SQLException {
 		return new File2Upload(rs.getLong("file_id"), rs.getString("file_name"), rs.getString("file_type"),
-				rs.getLong("file_size"), rs.getString("file_base_64"), rs.getString("file_mini_b64"), rs.getLong("usuario_id"));
+				rs.getLong("file_size"), rs.getString("file_base_64"), rs.getString("file_mini_b64"),
+				rs.getLong("usuario_id"));
 	}
-	
+
 	private File2Upload resultSet2FileMini(ResultSet rs) throws SQLException {
 		return new File2Upload(rs.getLong("file_id"), rs.getString("file_name"), rs.getString("file_type"),
 				rs.getLong("file_size"), rs.getString("file_mini_b64"), rs.getLong("usuario_id"));
 	}
-	
+
 }

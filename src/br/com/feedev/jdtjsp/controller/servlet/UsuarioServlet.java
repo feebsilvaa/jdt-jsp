@@ -30,9 +30,9 @@ import br.com.feedev.jdtjsp.controller.service.FilesService;
 import br.com.feedev.jdtjsp.controller.service.UsuarioService;
 import br.com.feedev.jdtjsp.exception.UsuarioExistenteException;
 import br.com.feedev.jdtjsp.model.bean.File2Upload;
-import br.com.feedev.jdtjsp.model.bean.PerfilUsuario;
-import br.com.feedev.jdtjsp.model.bean.SexoUsuario;
 import br.com.feedev.jdtjsp.model.bean.Usuario;
+import br.com.feedev.jdtjsp.model.enums.PerfilUsuario;
+import br.com.feedev.jdtjsp.model.enums.SexoUsuario;
 
 @WebServlet(urlPatterns = { "/usuarios" })
 @MultipartConfig
@@ -220,13 +220,9 @@ public class UsuarioServlet extends HttpServlet {
 			loginParam = request.getParameter("login");
 			senhaParam = request.getParameter("senha");
 			confirmaSenhaParam = request.getParameter("confirmaSenha");
-
 			perfilParam = PerfilUsuario.valueOf(request.getParameter("perfil"));
-
 			usuarioAtivoParam = "ativo".equalsIgnoreCase(request.getParameter("usuarioAtivo")) ? true : false;
 			
-			// CONTINUAR IMPLEMENTACAO DO PERFIL
-
 			try {
 				// FILE UPLOAD de imagem e pdf
 				if (ServletFileUpload.isMultipartContent(request)) {
@@ -252,6 +248,7 @@ public class UsuarioServlet extends HttpServlet {
 			params.put("loginParam", loginParam);
 			params.put("senhaParam", senhaParam);
 			params.put("confirmaSenhaParam", confirmaSenhaParam);
+			params.put("perfilParam", perfilParam.toString());
 			if (fotoFile != null) {
 				params.put("fotoParam", fotoFile.getFileB64());
 			}
@@ -261,7 +258,7 @@ public class UsuarioServlet extends HttpServlet {
 
 			Usuario userForm = new Usuario(null, nomeParam, telefoneParam, sexoParam, cepParam, logradouroParam,
 					numeroParam, complementoParam, bairroParam, cidadeParam, estadoParam, loginParam, senhaParam,
-					confirmaSenhaParam, fotoFile, pdfFile, usuarioAtivoParam);
+					confirmaSenhaParam, fotoFile, pdfFile, usuarioAtivoParam, perfilParam);
 
 			System.out.println(userForm);
 
@@ -338,7 +335,7 @@ public class UsuarioServlet extends HttpServlet {
 
 			Usuario userFormEdit = new Usuario(Long.valueOf(idParam), nomeParam, telefoneParam, sexoParam, cepParam,
 					logradouroParam, numeroParam, complementoParam, bairroParam, cidadeParam, estadoParam, loginParam,
-					senhaParam, confirmaSenhaParam, fotoFile, pdfFile, usuarioAtivoParam);
+					senhaParam, confirmaSenhaParam, fotoFile, pdfFile, usuarioAtivoParam, perfilParam);
 
 			if (isFormValido(nomeParam)) {
 

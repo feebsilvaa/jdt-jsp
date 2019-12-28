@@ -3,15 +3,19 @@ package br.com.feedev.jdtjsp.controller.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import br.com.feedev.jdtjsp.model.bean.CategoriaProduto;
 import br.com.feedev.jdtjsp.model.bean.Produto;
+import br.com.feedev.jdtjsp.model.dao.CategoriaDao;
 import br.com.feedev.jdtjsp.model.dao.ProdutoDao;
 
 public class ProdutoService {
 
 	private static ProdutoDao dao;
+	private static CategoriaDao daoCategorias;
 
 	public ProdutoService() {
 		dao = new ProdutoDao();
+		daoCategorias = new CategoriaDao();
 	}
 
 	public List<Produto> listar() throws SQLException {
@@ -23,6 +27,7 @@ public class ProdutoService {
 	}
 
 	public void salvarProduto(Produto novoProduto) throws SQLException {
+		novoProduto.setCategoria(daoCategorias.buscarCategoriaPorDescricao(novoProduto.getCategoria().getDescricao()));
 		dao.salvarProduto(novoProduto);
 	}
 
@@ -36,6 +41,10 @@ public class ProdutoService {
 
 	public Produto buscarProdutoPorId(Long id) throws SQLException {
 		return dao.buscarProdutoPorId(id);
+	}
+
+	public List<CategoriaProduto> listarCategorias() throws SQLException {
+		return daoCategorias.listar();
 	}
 
 }
