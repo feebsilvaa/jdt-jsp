@@ -79,10 +79,32 @@
 										<div class="form-group">
 											<div class="form-label-group">
 												<input type="number" name="preco" id="inputValor"
-													value="${ produto.preco }" class="form-control" min="0" max="999999999"
-													placeholder="Valor" required="required"> <label
-													for="inputValor">Valor</label>
+													value="${ produto.preco }" class="form-control" min="0"
+													max="999999999" placeholder="Valor" required="required">
+												<label for="inputValor">Valor</label>
 											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<label class="input-group-text" for="selectCategoria">Categoria</label>
+											</div>
+											<select class="custom-select" id="selectCategoria"
+												name="categoria">
+												<c:if test="${ empty produto.categoria }">
+													<option value="non_value" selected>Selecione...</option>
+												</c:if>
+												<c:if test="${ not empty produto.categoria }">
+													<option value="${ produto.categoria.id }" selected>${ produto.categoria.descricao }</option>
+													<option disabled>----------</option>
+												</c:if>
+												<c:forEach items="${ categoriasProduto }" var="categoria">
+													<option value="${ categoria.id }">${ categoria.descricao }</option>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 								</div>

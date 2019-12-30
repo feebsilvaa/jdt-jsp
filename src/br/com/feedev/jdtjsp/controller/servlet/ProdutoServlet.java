@@ -83,6 +83,11 @@ public class ProdutoServlet extends HttpServlet {
 			try {
 				Produto produto = produtoService.buscarProdutoPorId(Long.valueOf(idParam));
 				request.setAttribute("produto", produto);
+				List<CategoriaProduto> categoriasProduto = produtoService.listarCategorias();
+				if (produto.getCategoria() != null) {
+					categoriasProduto.remove(produto.getCategoria());
+				}
+				request.setAttribute("categoriasProduto", categoriasProduto);
 				this.dispathTo("edita-produto.jsp", request, response);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -141,14 +146,13 @@ public class ProdutoServlet extends HttpServlet {
 			params.put("nomeParam", nomeParam);
 			params.put("precoParam", precoParam);
 			params.put("quantidadeParam", quantidadeParam);
-			params.put("categoriaParam", categoriaParam);
 
 			if (isFormValido(nomeParam, precoParam, quantidadeParam)) {
 
 				try {
 					try {
 						this.salvarProduto(new Produto(nomeParam, new BigDecimal(precoParam),
-								Integer.valueOf(quantidadeParam), new CategoriaProduto(null, categoriaParam)), request,
+								Integer.valueOf(quantidadeParam), new CategoriaProduto(Long.valueOf(categoriaParam), null)), request,
 								response, params);
 					} catch (ProdutoExistenteException e) {
 						this.retornaErroForm("produtos?acao=listar", e.getMessage(), params, request, response);
@@ -183,6 +187,7 @@ public class ProdutoServlet extends HttpServlet {
 			nomeParam = request.getParameter("nome");
 			precoParam = request.getParameter("preco");
 			quantidadeParam = request.getParameter("quantidade");
+			categoriaParam = request.getParameter("categoria");
 
 			params.put("idParam", idParam);
 			params.put("nomeParam", nomeParam);
@@ -194,6 +199,7 @@ public class ProdutoServlet extends HttpServlet {
 				produtoEditado.setNome(nomeParam);
 				produtoEditado.setPreco(new BigDecimal(precoParam));
 				produtoEditado.setQuantidade(Integer.valueOf(quantidadeParam));
+				produtoEditado.setCategoria(new CategoriaProduto(Long.valueOf(categoriaParam), null));
 				try {
 					try {
 						this.editarProduto(Long.valueOf(idParam), produtoEditado, request, response);
@@ -279,8 +285,8 @@ public class ProdutoServlet extends HttpServlet {
 	private void listarProdutos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		List<Produto> produtos = produtoService.listar();
-		List<CategoriaProduto> categoriasProduto = produtoService.listarCategorias();
 		request.setAttribute("produtos", produtos);
+		List<CategoriaProduto> categoriasProduto = produtoService.listarCategorias();
 		request.setAttribute("categoriasProduto", categoriasProduto);
 		this.dispathTo("produtos.jsp", request, response);
 	}

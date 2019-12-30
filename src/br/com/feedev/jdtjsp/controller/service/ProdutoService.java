@@ -27,7 +27,7 @@ public class ProdutoService {
 	}
 
 	public void salvarProduto(Produto novoProduto) throws SQLException {
-		novoProduto.setCategoria(daoCategorias.buscarCategoriaPorDescricao(novoProduto.getCategoria().getDescricao()));
+		novoProduto.setCategoria(daoCategorias.buscarCategoriaProdutoPorId(novoProduto.getCategoria().getId()));
 		dao.salvarProduto(novoProduto);
 	}
 
@@ -36,6 +36,7 @@ public class ProdutoService {
 	}
 
 	public void editarProduto(Long id, Produto produto) throws SQLException {
+		produto.setCategoria(daoCategorias.buscarCategoriaProdutoPorId(produto.getCategoria().getId()));
 		dao.editarProduto(id, produto);
 	}
 

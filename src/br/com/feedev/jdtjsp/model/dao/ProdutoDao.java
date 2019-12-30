@@ -85,17 +85,21 @@ public class ProdutoDao {
 	}
 
 	public void editarProduto(Long id, Produto produto) throws SQLException {
-		String sql = "update produto set nome = ?, preco = ?, quantidade = ? where id = ?";
+		String sql = "update produto set nome = ?, preco = ?, quantidade = ?, id_categoria = ? where id = ?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, produto.getNome());
 		stmt.setBigDecimal(2, produto.getPreco());		
 		stmt.setInt(3, produto.getQuantidade());			
-		stmt.setLong(4, id);
+		stmt.setLong(4, produto.getCategoria().getId());			
+		stmt.setLong(5, id);
 		stmt.executeUpdate();
 	}
 
 	private Produto resultSetToProduto(ResultSet rs) throws SQLException {
 		CategoriaProduto categoria = new CategoriaProduto(rs.getLong("id_categoria"), rs.getString("descricao"));
+		if (categoria.getId() < 1) {
+			return new Produto(rs.getLong("id"), rs.getString("nome"), rs.getBigDecimal("preco"), rs.getInt("quantidade"), null);			
+		}		
 		return new Produto(rs.getLong("id"), rs.getString("nome"), rs.getBigDecimal("preco"), rs.getInt("quantidade"), categoria);
 	}
 

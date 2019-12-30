@@ -101,7 +101,7 @@
 													name="categoria">
 													<option value="non_value" selected>Selecione...</option>
 													<c:forEach items="${ categoriasProduto }" var="categoria">
-														<option value="${ categoria.descricao }">${ categoria.descricao }</option>
+														<option value="${ categoria.id }">${ categoria.descricao }</option>
 													</c:forEach>
 												</select>
 											</div>
